@@ -27,7 +27,6 @@ bot.on('message', async (msg) => {
         update: {},
         create: {
             id: msg.from.id,
-            // id: Math.random(),
             username: msg.from.username || 'UNKNOWN',
             name: msg.from.first_name,
             role: Role.guest
