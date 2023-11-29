@@ -1,0 +1,38 @@
+{
+  "name": "telegram",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@chakra-ui/react": "^2.8.2",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@prisma/client": "^5.5.2",
+    "@types/js-cookie": "^3.0.6",
+    "crypto-js": "^4.2.0",
+    "framer-motion": "^10.16.5",
+    "js-cookie": "^3.0.5",
+    "next": "14.0.2",
+    "node-telegram-bot-api": "^0.64.0",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-hook-form": "^7.48.2",
+    "sass": "^1.69.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/node-telegram-bot-api": "^0.63.3",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.0.2",
+    "prisma": "^5.5.2",
+    "telegram-webapps-types": "^1.0.5",
+    "typescript": "^5"
+  }
+}
