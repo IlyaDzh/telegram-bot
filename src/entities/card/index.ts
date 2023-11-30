@@ -1,4 +1,2 @@
-export { CARD_ANSWER_FIELD_NAME, CardAnswerField } from './ui/CardAnswerField';
-export { CARD_QUESTION_FIELD_NAME, CardQuestionField } from './ui/CardQuestionField';
-export type { CardAnswerFormField } from './ui/CardAnswerField';
-export type { CardQuestionFormField } from './ui/CardQuestionField';
+export { CARD_QUESTION_FIELD_NAME, CARD_QUESTION_FIELD_MODE, CardQuestionField } from './ui/CardQuestionField';
+export { CARD_ANSWER_FIELD_NAME, CARD_ANSWER_FIELD_MODE, CardAnswerField } from './ui/CardAnswerField';

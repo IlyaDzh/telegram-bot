@@ -1,11 +1,20 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-
 import { Box, Button, Heading, Text } from '@chakra-ui/react';
-import { CARD_ANSWER_FIELD_NAME, CARD_QUESTION_FIELD_NAME, CardAnswerField, CardQuestionField } from '@/entities/card';
+
+import {
+    CARD_ANSWER_FIELD_MODE,
+    CARD_ANSWER_FIELD_NAME,
+    CARD_QUESTION_FIELD_MODE,
+    CARD_QUESTION_FIELD_NAME,
+    CardAnswerField,
+    CardQuestionField,
+} from '@/entities/card';
 import { indexedDb } from '../lib/indexedDb';
 import { DeckUtils } from '../lib/DeckUtils';
 import { CardData } from '../types';
+
+const MAX_QUESTIONS_COUNT = 20;
 
 type Props = {
     cardIndex: number;
@@ -18,14 +27,16 @@ type Props = {
 const CardStep: FC<Props> = ({ cardIndex, onNextStep, onPrevStep, onSaveDeck, onClose }) => {
     const methods = useForm<CardData>({ mode: 'onBlur' });
 
-    const isLastCard = cardIndex === 20;
+    const isLastCard = cardIndex === MAX_QUESTIONS_COUNT;
 
     useEffect(() => {
         const getCardData = async () => {
             await DeckUtils.fetchDataFromIndexedDB<CardData[]>(indexedDb.getDataByKey, ['cards'], cardData => {
                 if (cardData[cardIndex - 1]) {
                     methods.setValue(CARD_QUESTION_FIELD_NAME, cardData[cardIndex - 1].cardQuestion);
+                    methods.setValue(CARD_QUESTION_FIELD_MODE, cardData[cardIndex - 1].cardQuestionMode);
                     methods.setValue(CARD_ANSWER_FIELD_NAME, cardData[cardIndex - 1].cardAnswer);
+                    methods.setValue(CARD_ANSWER_FIELD_MODE, cardData[cardIndex - 1].cardAnswerMode);
                 }
             });
         };
@@ -55,7 +66,9 @@ const CardStep: FC<Props> = ({ cardIndex, onNextStep, onPrevStep, onSaveDeck, on
                 <Heading as='h1' size='md'>
                     Карта {cardIndex}
                 </Heading>
-                <Text size='sm'>{cardIndex}/20</Text>
+                <Text size='sm'>
+                    {cardIndex}/{MAX_QUESTIONS_COUNT}
+                </Text>
                 <Button size='md' onClick={onClose}>
                     Отменить
                 </Button>

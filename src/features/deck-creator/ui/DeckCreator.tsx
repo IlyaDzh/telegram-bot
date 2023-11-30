@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { Spinner } from '@chakra-ui/react';
+
 import DeckStep from './DeckStep';
 import CardStep from './CardStep';
 import { indexedDb } from '../lib/indexedDb';
 import { DeckUtils } from '../lib/DeckUtils';
-import { Spinner } from '@chakra-ui/react';
 
 export const DeckCreator = () => {
     const [currentStep, setCurrentStep] = useState(0);
