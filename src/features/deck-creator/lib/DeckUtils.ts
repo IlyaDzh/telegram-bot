@@ -1,4 +1,4 @@
-import { CardData } from '../types';
+import { CardData, DeckData } from '../types';
 import { indexedDb } from './indexedDb';
 
 interface GetDataByKeyFunction<T> {
@@ -25,9 +25,12 @@ export class DeckUtils {
     static getCurrentStep = async () => {
         try {
             const cards = (await indexedDb.getDataByKey('cards')) as CardData[];
+            const deck = (await indexedDb.getDataByKey('deck-fields')) as DeckData;
 
             if (cards && cards.length > 0) {
                 return cards.length + 1;
+            } else if (deck) {
+                return 1;
             }
 
             return 0;

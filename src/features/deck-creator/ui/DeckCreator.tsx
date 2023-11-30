@@ -26,7 +26,8 @@ export const DeckCreator = () => {
     };
 
     const handleCreateDeck = async () => {
-        console.log('indexedDb data', await indexedDb.getAll());
+        const data = await indexedDb.getAll();
+        console.log('data', data);
 
         alert('save deck');
     };
