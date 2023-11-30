@@ -3,6 +3,7 @@ import DeckStep from './DeckStep';
 import CardStep from './CardStep';
 import { indexedDb } from '../lib/indexedDb';
 import { DeckUtils } from '../lib/DeckUtils';
+import { Spinner } from '@chakra-ui/react';
 
 export const DeckCreator = () => {
     const [currentStep, setCurrentStep] = useState(0);
@@ -35,7 +36,7 @@ export const DeckCreator = () => {
     };
 
     if (isLoading) {
-        return <div>loading...</div>;
+        return <Spinner thickness='4px' emptyColor='gray.200' size='xl' margin='auto' />;
     }
 
     return currentStep === 0 ? (

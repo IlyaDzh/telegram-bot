@@ -1,4 +1,4 @@
-import {extendTheme} from "@chakra-ui/react";
+import { extendTheme } from '@chakra-ui/react';
 
 export const theme = extendTheme({
     styles: {
@@ -6,10 +6,20 @@ export const theme = extendTheme({
             'html, body': {
                 color: 'var(--tg-theme-text-color)',
                 background: 'var(--tg-theme-bg-color)',
-            }
+            },
         },
     },
     components: {
+        Spinner: {
+            variants: {
+                initial: {
+                    color: 'var(--tg-theme-button-color)',
+                },
+            },
+            defaultProps: {
+                variant: 'initial',
+            },
+        },
         Button: {
             // 2. We can add a new button size or extend existing
             sizes: {
@@ -32,7 +42,7 @@ export const theme = extendTheme({
                         bg: '#4490c9',
                         color: 'var(--tg-theme-button-text-color)',
                     },
-                }
+                },
             },
             // 6. We can overwrite defaultProps
             defaultProps: {
@@ -41,4 +51,4 @@ export const theme = extendTheme({
             },
         },
     },
-})
+});
