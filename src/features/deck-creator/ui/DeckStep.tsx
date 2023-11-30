@@ -1,17 +1,14 @@
 import React, { FC, useCallback, useEffect } from 'react';
-import { Box, Button, Heading } from '@chakra-ui/react';
-import { DECK_CATEGORY_FIELD_NAME, DECK_TITLE_FIELD_NAME, DeckCategoryField, DeckTitleField } from '@/entities/deck';
 import { FormProvider, useForm } from 'react-hook-form';
+import { Box, Button, Heading } from '@chakra-ui/react';
+
+import { DECK_CATEGORY_FIELD_NAME, DECK_TITLE_FIELD_NAME, DeckCategoryField, DeckTitleField } from '@/entities/deck';
 import { indexedDb } from '../lib/indexedDb';
 import { DeckUtils } from '../lib/DeckUtils';
+import { DeckData } from '../types';
 
 type Props = {
     onSuccess: () => void;
-};
-
-type DeckData = {
-    deckTitle: string;
-    deckCategory: string;
 };
 
 const DeckStep: FC<Props> = ({ onSuccess }) => {

@@ -5,6 +5,7 @@ import { Box, Button, Heading, Text } from '@chakra-ui/react';
 import { CARD_ANSWER_FIELD_NAME, CARD_QUESTION_FIELD_NAME, CardAnswerField, CardQuestionField } from '@/entities/card';
 import { indexedDb } from '../lib/indexedDb';
 import { DeckUtils } from '../lib/DeckUtils';
+import { CardData } from '../types';
 
 type Props = {
     cardIndex: number;
@@ -14,11 +15,6 @@ type Props = {
     onClose: () => void;
 };
 
-type CardData = {
-    cardQuestion: string;
-    cardAnswer: string;
-};
-
 const CardStep: FC<Props> = ({ cardIndex, onNextStep, onPrevStep, onSaveDeck, onClose }) => {
     const methods = useForm<CardData>({ mode: 'onBlur' });
 
@@ -26,9 +22,11 @@ const CardStep: FC<Props> = ({ cardIndex, onNextStep, onPrevStep, onSaveDeck, on
 
     useEffect(() => {
         const getCardData = async () => {
-            await DeckUtils.fetchDataFromIndexedDB<CardData>(indexedDb.getDataByKey, [cardIndex], cardData => {
-                methods.setValue(CARD_QUESTION_FIELD_NAME, cardData.cardQuestion);
-                methods.setValue(CARD_ANSWER_FIELD_NAME, cardData.cardAnswer);
+            await DeckUtils.fetchDataFromIndexedDB<CardData[]>(indexedDb.getDataByKey, ['cards'], cardData => {
+                if (cardData[cardIndex - 1]) {
+                    methods.setValue(CARD_QUESTION_FIELD_NAME, cardData[cardIndex - 1].cardQuestion);
+                    methods.setValue(CARD_ANSWER_FIELD_NAME, cardData[cardIndex - 1].cardAnswer);
+                }
             });
         };
 
@@ -39,7 +37,9 @@ const CardStep: FC<Props> = ({ cardIndex, onNextStep, onPrevStep, onSaveDeck, on
 
     const submit = useCallback(async () => {
         try {
-            await indexedDb.addData(cardIndex, methods.getValues());
+            const data = ((await indexedDb.getDataByKey('cards')) || []) as CardData[];
+            data[cardIndex - 1] = methods.getValues();
+            await indexedDb.addData('cards', data);
 
             if (isLastCard) {
                 onSaveDeck();
