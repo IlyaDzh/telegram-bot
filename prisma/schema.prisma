@@ -11,11 +11,10 @@ datasource db {
 }
 
 model User {
-  id           BigInt            @id
+  id           BigInt         @id
   name         String
   username     String
   role         Int
-  deck         Deck[]
   learningDeck LearningDeck[]
 }
 
@@ -28,17 +27,14 @@ model Card {
   learningDeckKnownCards   LearningDeck? @relation("KnownCards", references: [id], fields: [learningDeckId])
   learningDeckUnknownCards LearningDeck? @relation("UnknownCards", references: [id], fields: [learningDeckId])
   learningDeckId           String?
-  LearningDeck             LearningDeck? @relation(fields: [learningDeckId], references: [id])
 }
 
 model Deck {
   id            String         @id @default(uuid())
   name          String
+  category      String
   cards         Card[]
-  private       Boolean        @default(false)
   learningDecks LearningDeck[]
-  User          User?          @relation(fields: [userId], references: [id])
-  userId        BigInt?
 }
 
 model LearningDeck {
@@ -49,5 +45,4 @@ model LearningDeck {
   userId       BigInt
   knownCards   Card[] @relation("KnownCards")
   unknownCards Card[] @relation("UnknownCards")
-  Card         Card[]
 }

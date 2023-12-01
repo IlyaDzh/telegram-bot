@@ -5,6 +5,7 @@ import DeckStep from './DeckStep';
 import CardStep from './CardStep';
 import { indexedDb } from '../lib/indexedDb';
 import { DeckUtils } from '../lib/DeckUtils';
+import { fetchCreateDeck } from '../api/fetchCreateDeck';
 
 export const DeckCreator = () => {
     const [currentStep, setCurrentStep] = useState(0);
@@ -29,7 +30,12 @@ export const DeckCreator = () => {
         const data = await indexedDb.getAll();
         console.log('data', data);
 
-        alert('save deck');
+        try {
+            await fetchCreateDeck(DeckUtils.formatCreateDeckPayload(data as any));
+            alert('save deck');
+        } catch {
+            alert('error');
+        }
     };
 
     const handleCloseDeck = () => {

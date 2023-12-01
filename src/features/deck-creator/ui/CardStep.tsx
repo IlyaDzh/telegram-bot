@@ -11,10 +11,8 @@ import {
     CardQuestionField,
 } from '@/entities/card';
 import { indexedDb } from '../lib/indexedDb';
-import { DeckUtils } from '../lib/DeckUtils';
+import { DeckUtils, MAX_QUESTIONS_COUNT } from '../lib/DeckUtils';
 import { CardData } from '../types';
-
-const MAX_QUESTIONS_COUNT = 20;
 
 type Props = {
     cardIndex: number;
@@ -32,11 +30,13 @@ const CardStep: FC<Props> = ({ cardIndex, onNextStep, onPrevStep, onSaveDeck, on
     useEffect(() => {
         const getCardData = async () => {
             await DeckUtils.fetchDataFromIndexedDB<CardData[]>(indexedDb.getDataByKey, ['cards'], cardData => {
-                if (cardData[cardIndex - 1]) {
-                    methods.setValue(CARD_QUESTION_FIELD_NAME, cardData[cardIndex - 1].cardQuestion);
-                    methods.setValue(CARD_QUESTION_FIELD_MODE, cardData[cardIndex - 1].cardQuestionMode);
-                    methods.setValue(CARD_ANSWER_FIELD_NAME, cardData[cardIndex - 1].cardAnswer);
-                    methods.setValue(CARD_ANSWER_FIELD_MODE, cardData[cardIndex - 1].cardAnswerMode);
+                const currentIndex = cardIndex - 1;
+
+                if (cardData[currentIndex]) {
+                    methods.setValue(CARD_QUESTION_FIELD_NAME, cardData[currentIndex].cardQuestion);
+                    methods.setValue(CARD_QUESTION_FIELD_MODE, cardData[currentIndex].cardQuestionMode);
+                    methods.setValue(CARD_ANSWER_FIELD_NAME, cardData[currentIndex].cardAnswer);
+                    methods.setValue(CARD_ANSWER_FIELD_MODE, cardData[currentIndex].cardAnswerMode);
                 }
             });
         };

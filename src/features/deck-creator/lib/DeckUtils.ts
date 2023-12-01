@@ -5,6 +5,8 @@ interface GetDataByKeyFunction<T> {
     (...keys: any[]): Promise<T | null>;
 }
 
+export const MAX_QUESTIONS_COUNT = 3;
+
 export class DeckUtils {
     static fetchDataFromIndexedDB = async <T>(
         getDataByKeyFunction: GetDataByKeyFunction<unknown>,
@@ -28,7 +30,7 @@ export class DeckUtils {
             const deck = (await indexedDb.getDataByKey('deck-fields')) as DeckData;
 
             if (cards && cards.length > 0) {
-                return cards.length + 1;
+                return cards.length === MAX_QUESTIONS_COUNT ? MAX_QUESTIONS_COUNT : cards.length + 1;
             } else if (deck) {
                 return 1;
             }
@@ -37,5 +39,13 @@ export class DeckUtils {
         } catch (error) {
             throw new Error('Error fetching data from IndexedDB');
         }
+    };
+
+    static formatCreateDeckPayload = (data: [cards: CardData[], deckFields: DeckData]) => {
+        return {
+            title: data[1].deckTitle,
+            category: data[1].deckCategory,
+            cards: data[0].map(card => ({ question: card.cardQuestion, answer: card.cardAnswer })),
+        };
     };
 }

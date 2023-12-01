@@ -37,7 +37,7 @@ bot.on('message', async msg => {
                 resize_keyboard: true,
                 inline_keyboard: [
                     [{ text: 'Создать доску', web_app: { url: URL } }],
-                    [{ text: 'Ссылка 2', web_app: { url: URL } }],
+                    [{ text: 'Список колод', web_app: { url: URL } }],
                 ],
             },
         });
