@@ -1,13 +1,13 @@
 export type CardData = {
-    cardQuestion: string;
-    cardQuestionMode: string;
-    cardAnswer: string;
-    cardAnswerMode: string;
+    question: string;
+    questionMode: string;
+    answer: string;
+    answerMode: string;
 };
 
 export type DeckData = {
-    deckTitle: string;
-    deckCategory: string;
+    title: string;
+    category: string;
 };
 
 export enum CardFieldMode {

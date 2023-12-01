@@ -1,11 +1,12 @@
 import React, { useId } from 'react';
-import { Field } from '@/shared/ui/field';
-import { Input } from '@chakra-ui/input';
 import { useFormContext } from 'react-hook-form';
 
-export const DECK_CATEGORY_FIELD_NAME = 'deckCategory';
+import { Field } from '@/shared/ui/field';
+import { Input } from '@chakra-ui/input';
 
-export type DeckCategoryFormField = { [DECK_CATEGORY_FIELD_NAME]: string };
+export const DECK_CATEGORY_FIELD_NAME = 'category';
+
+type DeckCategoryFormField = { [DECK_CATEGORY_FIELD_NAME]: string };
 
 export const DeckCategoryField = () => {
     const { register } = useFormContext<DeckCategoryFormField>();

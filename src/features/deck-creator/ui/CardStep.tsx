@@ -12,7 +12,7 @@ import {
 } from '@/entities/card';
 import { indexedDb } from '../lib/indexedDb';
 import { DeckUtils, MAX_QUESTIONS_COUNT } from '../lib/DeckUtils';
-import { CardData } from '../types';
+import { CardData, CardFieldMode } from '../types';
 
 type Props = {
     cardIndex: number;
@@ -23,7 +23,13 @@ type Props = {
 };
 
 const CardStep: FC<Props> = ({ cardIndex, onNextStep, onPrevStep, onSaveDeck, onClose }) => {
-    const methods = useForm<CardData>({ mode: 'onBlur' });
+    const methods = useForm<CardData>({
+        mode: 'onBlur',
+        defaultValues: {
+            questionMode: CardFieldMode.Text,
+            answerMode: CardFieldMode.Text,
+        },
+    });
 
     const isLastCard = cardIndex === MAX_QUESTIONS_COUNT;
 
@@ -33,10 +39,10 @@ const CardStep: FC<Props> = ({ cardIndex, onNextStep, onPrevStep, onSaveDeck, on
                 const currentIndex = cardIndex - 1;
 
                 if (cardData[currentIndex]) {
-                    methods.setValue(CARD_QUESTION_FIELD_NAME, cardData[currentIndex].cardQuestion);
-                    methods.setValue(CARD_QUESTION_FIELD_MODE, cardData[currentIndex].cardQuestionMode);
-                    methods.setValue(CARD_ANSWER_FIELD_NAME, cardData[currentIndex].cardAnswer);
-                    methods.setValue(CARD_ANSWER_FIELD_MODE, cardData[currentIndex].cardAnswerMode);
+                    methods.setValue(CARD_QUESTION_FIELD_NAME, cardData[currentIndex].question);
+                    methods.setValue(CARD_QUESTION_FIELD_MODE, cardData[currentIndex].questionMode);
+                    methods.setValue(CARD_ANSWER_FIELD_NAME, cardData[currentIndex].answer);
+                    methods.setValue(CARD_ANSWER_FIELD_MODE, cardData[currentIndex].answerMode);
                 }
             });
         };

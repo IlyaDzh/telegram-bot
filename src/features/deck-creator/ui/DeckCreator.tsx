@@ -27,15 +27,14 @@ export const DeckCreator = () => {
     };
 
     const handleCreateDeck = async () => {
-        const data = await indexedDb.getAll();
-        console.log('data', data);
-
         try {
+            const data = await indexedDb.getAll();
+
             await fetchCreateDeck(DeckUtils.formatCreateDeckPayload(data as any));
-            alert('save deck');
-        } catch {
-            alert('error');
-        }
+
+            indexedDb.deleteAll();
+            setCurrentStep(0);
+        } catch {}
     };
 
     const handleCloseDeck = () => {

@@ -21,7 +21,9 @@ model User {
 model Card {
   id                       String        @id @default(uuid())
   question                 String
+  questionMode             String?       @default("text")
   answer                   String
+  answerMode               String?       @default("text")
   deck                     Deck          @relation(fields: [deckId], references: [id])
   deckId                   String
   learningDeckKnownCards   LearningDeck? @relation("KnownCards", references: [id], fields: [learningDeckId])

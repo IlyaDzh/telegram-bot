@@ -17,8 +17,8 @@ const DeckStep: FC<Props> = ({ onSuccess }) => {
     useEffect(() => {
         const getDeckData = async () => {
             await DeckUtils.fetchDataFromIndexedDB<DeckData>(indexedDb.getDataByKey, ['deck-fields'], deckData => {
-                methods.setValue(DECK_TITLE_FIELD_NAME, deckData.deckTitle);
-                methods.setValue(DECK_CATEGORY_FIELD_NAME, deckData.deckCategory);
+                methods.setValue(DECK_TITLE_FIELD_NAME, deckData.title);
+                methods.setValue(DECK_CATEGORY_FIELD_NAME, deckData.category);
             });
         };
 

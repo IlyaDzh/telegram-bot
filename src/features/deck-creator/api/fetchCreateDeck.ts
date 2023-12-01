@@ -7,8 +7,6 @@ type CreateDeckPayload = {
 };
 
 export async function fetchCreateDeck(payload: CreateDeckPayload) {
-    console.log('payload', payload);
-
     return await fetch('/api/createDeck', {
         method: 'POST',
         headers: {

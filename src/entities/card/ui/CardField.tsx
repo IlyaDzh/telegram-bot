@@ -2,11 +2,11 @@ import React, { useId } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Switch, Textarea } from '@chakra-ui/react';
 
-import { Editor } from './Editor';
 import { Field } from '@/shared/ui/field';
 import { CardFieldMode } from '@/features/deck-creator/types';
+import { Editor } from './Editor';
 
-export interface CardFieldProps {
+interface CardFieldProps {
     fieldName: string;
     fieldNameMode: string;
     placeholder: string;

@@ -43,9 +43,9 @@ export class DeckUtils {
 
     static formatCreateDeckPayload = (data: [cards: CardData[], deckFields: DeckData]) => {
         return {
-            title: data[1].deckTitle,
-            category: data[1].deckCategory,
-            cards: data[0].map(card => ({ question: card.cardQuestion, answer: card.cardAnswer })),
+            title: data[1].title,
+            category: data[1].category,
+            cards: data[0],
         };
     };
 }

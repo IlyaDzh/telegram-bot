@@ -5,6 +5,8 @@ const CreateDeck = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method == 'POST') {
         const { title, category, cards } = req.body;
 
+        console.log('req.body', req.body);
+
         try {
             await prisma.deck.create({
                 data: {

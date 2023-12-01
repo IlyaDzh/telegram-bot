@@ -5,13 +5,13 @@ function useTelegramInitData() {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        setInitData(window.Telegram.WebApp.initData)
-        setIsLoading(false)
+        setInitData(window.Telegram.WebApp.initData);
+        setIsLoading(false);
     }, []);
 
     return {
         initData,
-        isLoading
+        isLoading,
     };
 }
 
