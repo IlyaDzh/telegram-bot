@@ -1,7 +1,7 @@
 import { CardData } from '@/db';
 
 type CreateDeckPayload = {
-    name: string;
+    title: string;
     category: string;
     cards: CardData[];
 };

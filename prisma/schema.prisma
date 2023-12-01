@@ -33,7 +33,7 @@ model Card {
 
 model Deck {
   id            String         @id @default(uuid())
-  name          String
+  title         String
   category      String
   cards         Card[]
   learningDecks LearningDeck[]

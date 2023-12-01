@@ -10,7 +10,7 @@ import {
     CardAnswerField,
     CardQuestionField,
 } from '@/entities/card';
-import { MAX_QUESTIONS_COUNT } from '../lib/DeckUtils';
+import { MAX_QUESTIONS_COUNT } from '../lib/DeckCreatorUtils';
 import { CardFieldMode } from '../types';
 import { db, CardData } from '@/db';
 
