@@ -10,9 +10,9 @@ import {
     CardAnswerField,
     CardQuestionField,
 } from '@/entities/card';
-import { indexedDb } from '../lib/indexedDb';
-import { DeckUtils, MAX_QUESTIONS_COUNT } from '../lib/DeckUtils';
-import { CardData, CardFieldMode } from '../types';
+import { MAX_QUESTIONS_COUNT } from '../lib/DeckUtils';
+import { CardFieldMode } from '../types';
+import { db, CardData } from '@/db';
 
 type Props = {
     cardIndex: number;
@@ -34,29 +34,25 @@ const CardStep: FC<Props> = ({ cardIndex, onNextStep, onPrevStep, onSaveDeck, on
     const isLastCard = cardIndex === MAX_QUESTIONS_COUNT;
 
     useEffect(() => {
-        const getCardData = async () => {
-            await DeckUtils.fetchDataFromIndexedDB<CardData[]>(indexedDb.getDataByKey, ['cards'], cardData => {
-                const currentIndex = cardIndex - 1;
+        const setCardData = async () => {
+            const currentCard = await db.cards.where({ id: cardIndex }).first();
 
-                if (cardData[currentIndex]) {
-                    methods.setValue(CARD_QUESTION_FIELD_NAME, cardData[currentIndex].question);
-                    methods.setValue(CARD_QUESTION_FIELD_MODE, cardData[currentIndex].questionMode);
-                    methods.setValue(CARD_ANSWER_FIELD_NAME, cardData[currentIndex].answer);
-                    methods.setValue(CARD_ANSWER_FIELD_MODE, cardData[currentIndex].answerMode);
-                }
-            });
+            if (currentCard) {
+                methods.setValue(CARD_QUESTION_FIELD_NAME, currentCard.question);
+                methods.setValue(CARD_QUESTION_FIELD_MODE, currentCard.questionMode);
+                methods.setValue(CARD_ANSWER_FIELD_NAME, currentCard.answer);
+                methods.setValue(CARD_ANSWER_FIELD_MODE, currentCard.answerMode);
+            }
         };
 
         methods.reset();
 
-        getCardData();
+        setCardData();
     }, [cardIndex, methods]);
 
     const submit = useCallback(async () => {
         try {
-            const data = ((await indexedDb.getDataByKey('cards')) || []) as CardData[];
-            data[cardIndex - 1] = methods.getValues();
-            await indexedDb.addData('cards', data);
+            await db.cards.put({ id: cardIndex, ...methods.getValues() });
 
             if (isLastCard) {
                 onSaveDeck();
@@ -64,7 +60,7 @@ const CardStep: FC<Props> = ({ cardIndex, onNextStep, onPrevStep, onSaveDeck, on
                 onNextStep();
             }
         } catch {}
-    }, [cardIndex, methods, isLastCard, onNextStep, onSaveDeck]);
+    }, [methods, cardIndex, isLastCard, onSaveDeck, onNextStep]);
 
     return (
         <FormProvider {...methods}>

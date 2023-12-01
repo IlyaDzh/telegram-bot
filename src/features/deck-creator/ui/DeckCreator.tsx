@@ -3,16 +3,23 @@ import { Spinner } from '@chakra-ui/react';
 
 import DeckStep from './DeckStep';
 import CardStep from './CardStep';
-import { indexedDb } from '../lib/indexedDb';
 import { DeckUtils } from '../lib/DeckUtils';
 import { fetchCreateDeck } from '../api/fetchCreateDeck';
+import { db } from '@/db';
 
 export const DeckCreator = () => {
     const [currentStep, setCurrentStep] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        DeckUtils.getCurrentStep().then(step => {
+        const getStep = async () => {
+            const cards = await db.cards.toArray();
+            const deck = await db.deck.toCollection().first();
+
+            return DeckUtils.getCurrentStep(deck, cards);
+        };
+
+        getStep().then(step => {
             setCurrentStep(step);
             setIsLoading(false);
         });
@@ -28,17 +35,20 @@ export const DeckCreator = () => {
 
     const handleCreateDeck = async () => {
         try {
-            const data = await indexedDb.getAll();
+            const cards = await db.cards.toArray();
+            const deck = await db.deck.toCollection().first();
 
-            await fetchCreateDeck(DeckUtils.formatCreateDeckPayload(data as any));
+            await fetchCreateDeck(DeckUtils.formatCreateDeckPayload(deck, cards));
 
-            indexedDb.deleteAll();
+            db.deck.clear();
+            db.cards.clear();
             setCurrentStep(0);
         } catch {}
     };
 
     const handleCloseDeck = () => {
-        indexedDb.deleteAll();
+        db.deck.clear();
+        db.cards.clear();
         setCurrentStep(0);
     };
 

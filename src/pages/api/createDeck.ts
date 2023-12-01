@@ -3,14 +3,13 @@ import prisma from '@/server/entities/prisma';
 
 const CreateDeck = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method == 'POST') {
-        const { title, category, cards } = req.body;
-
-        console.log('req.body', req.body);
+        const { name, category, cards } = req.body;
+console.log('cards', cards);
 
         try {
             await prisma.deck.create({
                 data: {
-                    name: title,
+                    name: name,
                     category: category,
                     cards: {
                         create: cards,

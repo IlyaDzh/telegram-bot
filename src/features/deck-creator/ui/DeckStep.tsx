@@ -3,9 +3,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { Box, Button, Heading } from '@chakra-ui/react';
 
 import { DECK_CATEGORY_FIELD_NAME, DECK_TITLE_FIELD_NAME, DeckCategoryField, DeckTitleField } from '@/entities/deck';
-import { indexedDb } from '../lib/indexedDb';
-import { DeckUtils } from '../lib/DeckUtils';
-import { DeckData } from '../types';
+import { db, DeckData } from '@/db';
 
 type Props = {
     onSuccess: () => void;
@@ -15,21 +13,26 @@ const DeckStep: FC<Props> = ({ onSuccess }) => {
     const methods = useForm<DeckData>({ mode: 'onBlur' });
 
     useEffect(() => {
-        const getDeckData = async () => {
-            await DeckUtils.fetchDataFromIndexedDB<DeckData>(indexedDb.getDataByKey, ['deck-fields'], deckData => {
+        const setDeckData = async () => {
+            const deckData = await db.deck.toCollection().first();
+
+            if (deckData) {
+                methods.reset();
+
                 methods.setValue(DECK_TITLE_FIELD_NAME, deckData.title);
                 methods.setValue(DECK_CATEGORY_FIELD_NAME, deckData.category);
-            });
+            }
         };
 
         methods.reset();
 
-        getDeckData();
+        setDeckData();
     }, [methods]);
 
     const submit = useCallback(async () => {
         try {
-            await indexedDb.addData('deck-fields', methods.getValues());
+            await db.deck.clear();
+            await db.deck.put(methods.getValues());
 
             onSuccess();
         } catch {}
