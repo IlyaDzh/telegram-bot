@@ -12,25 +12,26 @@ export const DeckCreator = () => {
     const [isCreated, setIsCreated] = useState(false);
 
     useEffect(() => {
-        DeckCreatorUtils.getCurrentStep().then(step => {
-            setCurrentStep(step);
-            setIsLoading(false);
-        });
+        const getStepsState = async () => {
+            try {
+                const step = await DeckCreatorUtils.getCurrentStep();
+                setCurrentStep(step);
+                setIsLoading(false);
+            } catch {}
+        };
+
+        getStepsState();
     }, []);
 
-    const handleNextStep = () => {
-        setCurrentStep(prev => ++prev);
-    };
-
-    const handlePrevStep = () => {
-        setCurrentStep(prev => --prev);
-    };
+    const handleNextStep = () => setCurrentStep(prev => ++prev);
+    const handlePrevStep = () => setCurrentStep(prev => --prev);
 
     const handleCreateDeck = async () => {
-        DeckCreatorUtils.createDeck().then(() => {
+        try {
+            await DeckCreatorUtils.createDeck();
             DeckCreatorUtils.clearDB();
             setIsCreated(true);
-        });
+        } catch {}
     };
 
     const handleCloseDeck = () => {

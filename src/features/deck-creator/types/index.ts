@@ -8,4 +8,5 @@ export interface CreateCardData {
 export interface CreateDeckData {
     title: string;
     category: string;
+    cardsCount: number;
 }

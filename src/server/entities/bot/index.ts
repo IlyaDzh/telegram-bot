@@ -8,17 +8,17 @@ const URL = process.env.NEXT_PUBLIC_BASE_URL as string;
 const bot = new TelegramBot(token, { polling: true });
 
 bot.on('message', async msg => {
-    // Фильтруем ботов
     const chatId = msg.chat.id;
+
     if (!msg.from) {
         return;
     }
+
     if (msg.from.is_bot) {
         return bot.sendMessage(chatId, 'С ботами не работаем');
     }
 
-    // Теневая регистрация, нужна для индентификации в веб-апп
-    await prisma.user.upsert({
+    const user = await prisma.user.upsert({
         where: {
             id: msg.from.id,
         },
@@ -32,17 +32,24 @@ bot.on('message', async msg => {
     });
 
     if (msg.text === '/start') {
-        return bot.sendMessage(chatId, 'Старт', {
+        const keyboards = [
+            [{ text: 'Список всех колод', web_app: { url: `${URL}/decks` } }],
+            [{ text: 'Изучаемые колоды', web_app: { url: `${URL}/learning-decks` } }],
+        ];
+
+        if (user.role === Role.admin) {
+            keyboards.unshift([{ text: 'Создать колоду', web_app: { url: URL } }]);
+        }
+
+        return bot.sendMessage(chatId, 'Привет 👋\nВыбирай нужную опцию и приступай к изучению материала', {
             reply_markup: {
                 resize_keyboard: true,
-                inline_keyboard: [
-                    [{ text: 'Создать доску', web_app: { url: URL } }],
-                    [{ text: 'Список колод', web_app: { url: `${URL}/decks` } }],
-                ],
+                inline_keyboard: keyboards,
             },
         });
     }
-    bot.sendMessage(chatId, 'Больше команд нет');
+
+    bot.sendMessage(chatId, 'Больше команд нет. Напиши /start чтобы начать');
 });
 
 export {};

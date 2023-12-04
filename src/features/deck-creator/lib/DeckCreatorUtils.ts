@@ -2,15 +2,15 @@ import { db } from '@/db';
 import { CreateCardData, CreateDeckData } from '../types';
 import { fetchCreateDeck } from '../api/fetchCreateDeck';
 
-export const MAX_QUESTIONS_COUNT = 3;
+export const DEFAULT_MAX_CARD_COUNTS = 20;
 
 export class DeckCreatorUtils {
     static getCurrentStep = async () => {
         const cardsCount = await db.cards.count();
         const deck = await db.deck.toCollection().first();
 
-        if (cardsCount > 0) {
-            return cardsCount === MAX_QUESTIONS_COUNT ? MAX_QUESTIONS_COUNT : cardsCount + 1;
+        if (cardsCount > 0 && deck) {
+            return cardsCount === deck.cardsCount ? deck.cardsCount : cardsCount + 1;
         }
 
         if (deck) {

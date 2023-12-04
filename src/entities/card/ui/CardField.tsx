@@ -12,8 +12,12 @@ interface CardFieldProps {
     placeholder: string;
 }
 
+interface FormData {
+    [key: string]: string;
+}
+
 export const CardField: React.FC<CardFieldProps> = ({ fieldName, fieldNameMode, placeholder }) => {
-    const { register, setValue, watch } = useFormContext<any>();
+    const { register, setValue, watch } = useFormContext<FormData>();
     const errorId = useId();
 
     const [fieldValue, fieldMode] = watch([fieldName, fieldNameMode]);

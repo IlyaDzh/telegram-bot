@@ -1,8 +1,7 @@
-import React, { FC, useCallback, useEffect } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import React, { FC, useCallback, useEffect, useState } from 'react';
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { Box, Button, Heading, Text } from '@chakra-ui/react';
 
-import { MAX_QUESTIONS_COUNT } from '../lib/DeckCreatorUtils';
 import { CreateCardData } from '../types';
 import {
     CARD_ANSWER_FIELD_MODE,
@@ -25,6 +24,8 @@ type Props = {
 };
 
 const CardStep: FC<Props> = ({ cardIndex, onNextStep, onPrevStep, onSaveDeck, onClose }) => {
+    const [maxCardsCount, setMaxCount] = useState(0);
+
     const methods = useForm<CreateCardData>({
         mode: 'onBlur',
         defaultValues: {
@@ -33,36 +34,46 @@ const CardStep: FC<Props> = ({ cardIndex, onNextStep, onPrevStep, onSaveDeck, on
         },
     });
 
-    const isLastCard = cardIndex === MAX_QUESTIONS_COUNT;
+    const isLastCard = cardIndex === maxCardsCount;
 
     useEffect(() => {
-        const setCardData = async () => {
-            const currentCard = await db.cards.where({ id: cardIndex }).first();
+        const fetchCardData = async () => {
+            try {
+                const currentCard = await db.cards.where({ id: cardIndex }).first();
+                const deckData = await db.deck.toCollection().first();
 
-            if (currentCard) {
-                methods.setValue(CARD_QUESTION_FIELD_NAME, currentCard.question);
-                methods.setValue(CARD_QUESTION_FIELD_MODE, currentCard.questionMode);
-                methods.setValue(CARD_ANSWER_FIELD_NAME, currentCard.answer);
-                methods.setValue(CARD_ANSWER_FIELD_MODE, currentCard.answerMode);
-            }
+                if (currentCard) {
+                    methods.setValue(CARD_QUESTION_FIELD_NAME, currentCard.question);
+                    methods.setValue(CARD_QUESTION_FIELD_MODE, currentCard.questionMode);
+                    methods.setValue(CARD_ANSWER_FIELD_NAME, currentCard.answer);
+                    methods.setValue(CARD_ANSWER_FIELD_MODE, currentCard.answerMode);
+                }
+
+                if (deckData) {
+                    setMaxCount(deckData.cardsCount);
+                }
+            } catch {}
         };
 
         methods.reset();
 
-        setCardData();
+        fetchCardData();
     }, [cardIndex, methods]);
 
-    const submit = useCallback(async () => {
-        try {
-            await db.cards.put({ id: cardIndex, ...methods.getValues() });
+    const submit: SubmitHandler<CreateCardData> = useCallback(
+        async values => {
+            try {
+                await db.cards.put({ id: cardIndex, ...values });
 
-            if (isLastCard) {
-                onSaveDeck();
-            } else {
-                onNextStep();
-            }
-        } catch {}
-    }, [methods, cardIndex, isLastCard, onSaveDeck, onNextStep]);
+                if (isLastCard) {
+                    onSaveDeck();
+                } else {
+                    onNextStep();
+                }
+            } catch {}
+        },
+        [cardIndex, isLastCard, onSaveDeck, onNextStep],
+    );
 
     return (
         <FormProvider {...methods}>
@@ -71,7 +82,7 @@ const CardStep: FC<Props> = ({ cardIndex, onNextStep, onPrevStep, onSaveDeck, on
                     Карта {cardIndex}
                 </Heading>
                 <Text size='sm'>
-                    {cardIndex}/{MAX_QUESTIONS_COUNT}
+                    {cardIndex}/{maxCardsCount}
                 </Text>
                 <Button size='md' onClick={onClose}>
                     Отменить

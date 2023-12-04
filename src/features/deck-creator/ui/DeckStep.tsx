@@ -1,9 +1,17 @@
 import React, { FC, useCallback, useEffect } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { Box, Button, Heading } from '@chakra-ui/react';
 
 import { CreateDeckData } from '../types';
-import { DECK_CATEGORY_FIELD_NAME, DECK_TITLE_FIELD_NAME, DeckCategoryField, DeckTitleField } from '@/entities/deck';
+import { DEFAULT_MAX_CARD_COUNTS } from '../lib/DeckCreatorUtils';
+import {
+    DECK_CATEGORY_FIELD_NAME,
+    DECK_TITLE_FIELD_NAME,
+    DECK_CARDS_COUNT_FIELD_NAME,
+    DeckCategoryField,
+    DeckTitleField,
+    DeckCardsCountField,
+} from '@/entities/deck';
 import { db } from '@/db';
 import { ColumnLayout } from '@/shared/ui/layout';
 
@@ -12,31 +20,42 @@ type Props = {
 };
 
 const DeckStep: FC<Props> = ({ onSuccess }) => {
-    const methods = useForm<CreateDeckData>({ mode: 'onBlur' });
+    const methods = useForm<CreateDeckData>({
+        mode: 'onBlur',
+        defaultValues: {
+            cardsCount: DEFAULT_MAX_CARD_COUNTS,
+        },
+    });
 
     useEffect(() => {
-        const setDeckData = async () => {
-            const deckData = await db.deck.toCollection().first();
+        const fetchDeckData = async () => {
+            try {
+                const deckData = await db.deck.toCollection().first();
 
-            if (deckData) {
-                methods.setValue(DECK_TITLE_FIELD_NAME, deckData.title);
-                methods.setValue(DECK_CATEGORY_FIELD_NAME, deckData.category);
-            }
+                if (deckData) {
+                    methods.setValue(DECK_TITLE_FIELD_NAME, deckData.title);
+                    methods.setValue(DECK_CATEGORY_FIELD_NAME, deckData.category);
+                    methods.setValue(DECK_CARDS_COUNT_FIELD_NAME, deckData.cardsCount);
+                }
+            } catch {}
         };
 
         methods.reset();
 
-        setDeckData();
+        fetchDeckData();
     }, [methods]);
 
-    const onSubmit = useCallback(async () => {
-        try {
-            await db.deck.clear();
-            await db.deck.put(methods.getValues());
+    const onSubmit: SubmitHandler<CreateDeckData> = useCallback(
+        async values => {
+            try {
+                await db.deck.clear();
+                await db.deck.put(values);
 
-            onSuccess();
-        } catch {}
-    }, [methods, onSuccess]);
+                onSuccess();
+            } catch {}
+        },
+        [onSuccess],
+    );
 
     return (
         <FormProvider {...methods}>
@@ -45,6 +64,7 @@ const DeckStep: FC<Props> = ({ onSuccess }) => {
                 <Box mt={8}>
                     <DeckTitleField />
                     <DeckCategoryField />
+                    <DeckCardsCountField />
                 </Box>
                 <Button type='submit'>Далее</Button>
             </ColumnLayout>
