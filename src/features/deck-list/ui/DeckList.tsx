@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Spinner } from '@chakra-ui/react';
+import { Box, Spinner } from '@chakra-ui/react';
 
-import { DeckData } from '@/db';
+import { DeckCard } from './DeckCard';
+import { Deck } from '../types';
 import { fetchDecks } from '../api/fetchDecks';
 
 export const DeckList = () => {
-    const [decks, setDecks] = useState<DeckData[]>([]);
+    const [decks, setDecks] = useState<Deck[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         fetchDecks().then(decks => {
-            setIsLoading(false);
             setDecks(decks);
+            setIsLoading(false);
         });
     }, []);
 
@@ -20,10 +21,10 @@ export const DeckList = () => {
     }
 
     return (
-        <div>
+        <Box display='grid' gap={6}>
             {decks.map((deck, index) => (
-                <div key={index}>{deck.title}</div>
+                <DeckCard key={index} {...deck} />
             ))}
-        </div>
+        </Box>
     );
 };

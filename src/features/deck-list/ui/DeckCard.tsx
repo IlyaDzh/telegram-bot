@@ -1,0 +1,30 @@
+import { FC } from 'react';
+import NextLink from 'next/link';
+import { Card, CardHeader, Heading, CardFooter, Button, Text, Box } from '@chakra-ui/react';
+
+import { Deck } from '../types';
+
+export const DeckCard: FC<Deck> = ({ id, title, category, questionsCount }) => {
+    return (
+        <Card variant='outline'>
+            <CardHeader>
+                <Box display='flex' alignItems='center' justifyContent='space-between' gap={4} mb={1}>
+                    <Heading size='sm' as='h2' color='gray.600' fontWeight='400'>
+                        {category}
+                    </Heading>
+                    <Text color='gray.600'>{questionsCount} вопросов</Text>
+                </Box>
+                <Heading size='md' as='h1'>
+                    {title}
+                </Heading>
+            </CardHeader>
+            <CardFooter p={0}>
+                <NextLink href={`/decks/${id}`} passHref legacyBehavior>
+                    <Button as='a' width='100%'>
+                        Изучать
+                    </Button>
+                </NextLink>
+            </CardFooter>
+        </Card>
+    );
+};

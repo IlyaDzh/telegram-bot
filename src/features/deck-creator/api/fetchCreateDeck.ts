@@ -1,9 +1,9 @@
-import { CardData } from '@/db';
+import { CreateCardData } from '../types';
 
 type CreateDeckPayload = {
     title: string;
     category: string;
-    cards: CardData[];
+    cards: CreateCardData[];
 };
 
 export async function fetchCreateDeck(payload: CreateDeckPayload) {

@@ -3,14 +3,16 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { Box, Button, Heading } from '@chakra-ui/react';
 
 import { DECK_CATEGORY_FIELD_NAME, DECK_TITLE_FIELD_NAME, DeckCategoryField, DeckTitleField } from '@/entities/deck';
-import { db, DeckData } from '@/db';
+import { db } from '@/db';
+import { CreateDeckData } from '../types';
+import { ColumnLayout } from '@/shared/ui/layout';
 
 type Props = {
     onSuccess: () => void;
 };
 
 const DeckStep: FC<Props> = ({ onSuccess }) => {
-    const methods = useForm<DeckData>({ mode: 'onBlur' });
+    const methods = useForm<CreateDeckData>({ mode: 'onBlur' });
 
     useEffect(() => {
         const setDeckData = async () => {
@@ -40,21 +42,14 @@ const DeckStep: FC<Props> = ({ onSuccess }) => {
 
     return (
         <FormProvider {...methods}>
-            <Heading>Колода</Heading>
-            <Box
-                as='form'
-                onSubmit={methods.handleSubmit(submit)}
-                h='100%'
-                display='flex'
-                flexDirection='column'
-                justifyContent='space-between'
-            >
+            <Heading as='h1'>Колода</Heading>
+            <ColumnLayout as='form' onSubmit={methods.handleSubmit(submit)}>
                 <Box mt={8}>
                     <DeckTitleField />
                     <DeckCategoryField />
                 </Box>
                 <Button type='submit'>Далее</Button>
-            </Box>
+            </ColumnLayout>
         </FormProvider>
     );
 };

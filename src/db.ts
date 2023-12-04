@@ -1,21 +1,13 @@
 import Dexie, { Table } from 'dexie';
+import { CreateCardData, CreateDeckData } from './types';
 
-export interface CardData {
-    id?: number;
-    question: string;
-    questionMode: string;
-    answer: string;
-    answerMode: string;
-}
-
-export interface DeckData {
-    title: string;
-    category: string;
-}
+type WithId<T> = T & {
+    id: number;
+};
 
 export class IndexedDBWrapper extends Dexie {
-    cards!: Table<CardData>;
-    deck!: Table<DeckData>;
+    cards!: Table<WithId<CreateCardData>>;
+    deck!: Table<CreateDeckData>;
 
     constructor() {
         super('myDatabase');

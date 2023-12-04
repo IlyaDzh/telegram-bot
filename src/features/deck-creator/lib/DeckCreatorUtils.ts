@@ -1,4 +1,5 @@
-import { DeckData, CardData, db } from '@/db';
+import { db } from '@/db';
+import { CreateCardData, CreateDeckData } from '../types';
 import { fetchCreateDeck } from '../api/fetchCreateDeck';
 
 export const MAX_QUESTIONS_COUNT = 3;
@@ -31,7 +32,7 @@ export class DeckCreatorUtils {
         db.cards.clear();
     };
 
-    private static formatCreatePayload = (deck?: DeckData, cards?: CardData[]) => {
+    private static formatCreatePayload = (deck?: CreateDeckData, cards?: CreateCardData[]) => {
         return {
             title: deck?.title || '',
             category: deck?.category || '',

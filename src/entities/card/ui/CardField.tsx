@@ -3,8 +3,8 @@ import { useFormContext } from 'react-hook-form';
 import { Switch, Textarea } from '@chakra-ui/react';
 
 import { Field } from '@/shared/ui/field';
-import { CardFieldMode } from '@/features/deck-creator/types';
-import { Editor } from './Editor';
+import { Editor } from '@/shared/ui/editor';
+import { ECardFieldMode } from '@/enums';
 
 interface CardFieldProps {
     fieldName: string;
@@ -23,7 +23,7 @@ export const CardField: React.FC<CardFieldProps> = ({ fieldName, fieldNameMode, 
     };
 
     const handleSwitchMode = () => {
-        setValue(fieldNameMode, fieldMode === CardFieldMode.Code ? CardFieldMode.Text : CardFieldMode.Code);
+        setValue(fieldNameMode, fieldMode === ECardFieldMode.Code ? ECardFieldMode.Text : ECardFieldMode.Code);
     };
 
     return (
@@ -54,7 +54,7 @@ export const CardField: React.FC<CardFieldProps> = ({ fieldName, fieldNameMode, 
                 position='absolute'
                 top={1}
                 right={1}
-                zIndex={5}
+                zIndex={10}
             />
         </Field>
     );

@@ -11,8 +11,10 @@ import {
     CardQuestionField,
 } from '@/entities/card';
 import { MAX_QUESTIONS_COUNT } from '../lib/DeckCreatorUtils';
-import { CardFieldMode } from '../types';
-import { db, CardData } from '@/db';
+import { CreateCardData } from '../types';
+import { db } from '@/db';
+import { ECardFieldMode } from '@/enums';
+import { ColumnLayout } from '@/shared/ui/layout';
 
 type Props = {
     cardIndex: number;
@@ -23,11 +25,11 @@ type Props = {
 };
 
 const CardStep: FC<Props> = ({ cardIndex, onNextStep, onPrevStep, onSaveDeck, onClose }) => {
-    const methods = useForm<CardData>({
+    const methods = useForm<CreateCardData>({
         mode: 'onBlur',
         defaultValues: {
-            questionMode: CardFieldMode.Text,
-            answerMode: CardFieldMode.Text,
+            questionMode: ECardFieldMode.Text,
+            answerMode: ECardFieldMode.Text,
         },
     });
 
@@ -75,14 +77,7 @@ const CardStep: FC<Props> = ({ cardIndex, onNextStep, onPrevStep, onSaveDeck, on
                     Отменить
                 </Button>
             </Box>
-            <Box
-                as='form'
-                onSubmit={methods.handleSubmit(submit)}
-                h='100%'
-                display='flex'
-                flexDirection='column'
-                justifyContent='space-between'
-            >
+            <ColumnLayout as='form' onSubmit={methods.handleSubmit(submit)}>
                 <Box mt={8}>
                     <CardQuestionField />
                     <CardAnswerField />
@@ -91,7 +86,7 @@ const CardStep: FC<Props> = ({ cardIndex, onNextStep, onPrevStep, onSaveDeck, on
                     {isLastCard ? <Button type='submit'>Сохранить</Button> : <Button type='submit'>Далее</Button>}
                     <Button onClick={onPrevStep}>Назад</Button>
                 </Box>
-            </Box>
+            </ColumnLayout>
         </FormProvider>
     );
 };
