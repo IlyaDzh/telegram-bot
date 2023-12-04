@@ -1,5 +1,6 @@
 import Dexie, { Table } from 'dexie';
-import { CreateCardData, CreateDeckData } from './types';
+
+import { CreateCardData, CreateDeckData } from './features/deck-creator/types';
 
 type WithId<T> = T & {
     id: number;
@@ -10,7 +11,7 @@ export class IndexedDBWrapper extends Dexie {
     deck!: Table<CreateDeckData>;
 
     constructor() {
-        super('myDatabase');
+        super('db');
 
         this.version(1).stores({
             cards: 'id, question, questionMode, answer, answerMode',

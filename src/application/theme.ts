@@ -31,18 +31,18 @@ export const theme = extendTheme({
             },
             // 3. We can add a new visual variant
             variants: {
-                // solid: {
-                //     bg: 'var(--tg-theme-button-color)',
-                //     color: 'var(--tg-theme-button-text-color)',
-                //     _hover: {
-                //         bg: 'var(--tg-theme-button-color)',
-                //         color: 'var(--tg-theme-button-text-color)',
-                //     },
-                //     _active: {
-                //         bg: '#4490c9',
-                //         color: 'var(--tg-theme-button-text-color)',
-                //     },
-                // },
+                solid: {
+                    bg: 'var(--tg-theme-button-color)',
+                    color: 'var(--tg-theme-button-text-color)',
+                    _hover: {
+                        bg: 'var(--tg-theme-button-color)',
+                        color: 'var(--tg-theme-button-text-color)',
+                    },
+                    _active: {
+                        bg: '#4490c9',
+                        color: 'var(--tg-theme-button-text-color)',
+                    },
+                },
             },
             // 6. We can overwrite defaultProps
             defaultProps: {

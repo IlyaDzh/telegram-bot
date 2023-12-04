@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Spinner } from '@chakra-ui/react';
 
+import { Spinner } from '@/shared/ui/spinner';
+import { DeckCreatorUtils } from '../lib/DeckCreatorUtils';
 import DeckStep from './DeckStep';
 import CardStep from './CardStep';
-import { DeckCreatorUtils } from '../lib/DeckCreatorUtils';
+import { SuccessAlert } from './SuccessAlert';
 
 export const DeckCreator = () => {
     const [currentStep, setCurrentStep] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
+    const [isCreated, setIsCreated] = useState(false);
 
     useEffect(() => {
         DeckCreatorUtils.getCurrentStep().then(step => {
@@ -27,7 +29,7 @@ export const DeckCreator = () => {
     const handleCreateDeck = async () => {
         DeckCreatorUtils.createDeck().then(() => {
             DeckCreatorUtils.clearDB();
-            setCurrentStep(0);
+            setIsCreated(true);
         });
     };
 
@@ -36,8 +38,17 @@ export const DeckCreator = () => {
         setCurrentStep(0);
     };
 
+    const handleCreateAgainClick = () => {
+        setCurrentStep(0);
+        setIsCreated(false);
+    };
+
     if (isLoading) {
-        return <Spinner thickness='4px' emptyColor='gray.200' size='xl' margin='auto' />;
+        return <Spinner />;
+    }
+
+    if (isCreated) {
+        return <SuccessAlert onCreate={handleCreateAgainClick} />;
     }
 
     return currentStep === 0 ? (

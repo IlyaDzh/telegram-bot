@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Spinner } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 
-import { DeckCard } from './DeckCard';
-import { Deck } from '../types';
+import { Spinner } from '@/shared/ui/spinner';
 import { fetchDecks } from '../api/fetchDecks';
+import { Deck } from '../types';
+import { DeckCard } from './DeckCard';
+import { NotFoundAlert } from './NotFoundAlert';
 
 export const DeckList = () => {
     const [decks, setDecks] = useState<Deck[]>([]);
@@ -17,7 +19,11 @@ export const DeckList = () => {
     }, []);
 
     if (isLoading) {
-        return <Spinner thickness='4px' emptyColor='gray.200' size='xl' margin='auto' />;
+        return <Spinner />;
+    }
+
+    if (decks.length === 0) {
+        return <NotFoundAlert />;
     }
 
     return (

@@ -1,7 +1,9 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Box, Button, Heading, Text } from '@chakra-ui/react';
 
+import { MAX_QUESTIONS_COUNT } from '../lib/DeckCreatorUtils';
+import { CreateCardData } from '../types';
 import {
     CARD_ANSWER_FIELD_MODE,
     CARD_ANSWER_FIELD_NAME,
@@ -10,11 +12,9 @@ import {
     CardAnswerField,
     CardQuestionField,
 } from '@/entities/card';
-import { MAX_QUESTIONS_COUNT } from '../lib/DeckCreatorUtils';
-import { CreateCardData } from '../types';
+import { ColumnLayout } from '@/shared/ui/layout';
 import { db } from '@/db';
 import { ECardFieldMode } from '@/enums';
-import { ColumnLayout } from '@/shared/ui/layout';
 
 type Props = {
     cardIndex: number;

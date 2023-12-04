@@ -1,5 +1,5 @@
-import { Box } from '@chakra-ui/react';
 import { FC, ReactNode } from 'react';
+import { Box } from '@chakra-ui/react';
 
 export const MainLayout: FC<{ children: ReactNode }> = ({ children }) => {
     return (

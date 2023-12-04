@@ -1,8 +1,8 @@
 import React, { useId } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { Input } from '@chakra-ui/input';
 
 import { Field } from '@/shared/ui/field';
-import { Input } from '@chakra-ui/input';
 
 export const DECK_TITLE_FIELD_NAME = 'title';
 

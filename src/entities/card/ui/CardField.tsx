@@ -35,6 +35,8 @@ export const CardField: React.FC<CardFieldProps> = ({ fieldName, fieldNameMode, 
                     aria-errormessage={errorId}
                     value={fieldValue}
                     onChange={handleEditorChange}
+                    maxLines={20}
+                    minLines={8}
                 />
             ) : (
                 <Textarea

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import NextLink from 'next/link';
-import { Alert, AlertDescription, AlertIcon, AlertTitle, Box, Button, Spinner } from '@chakra-ui/react';
+import { Box, Button } from '@chakra-ui/react';
 
-import { QuestionCard } from './QuestionCard';
+import { ColumnLayout } from '@/shared/ui/layout';
+import { Spinner } from '@/shared/ui/spinner';
 import { Card } from '../types';
 import { fetchCards } from '../api/fetchCards';
-import { ColumnLayout } from '@/shared/ui/layout';
+import { QuestionCard } from './QuestionCard';
+import { SuccessAlert } from './SuccessAlert';
+import { NotFoundAlert } from './NotFoundAlert';
 
 export const LearnDeck = () => {
     const router = useRouter();
@@ -33,67 +35,15 @@ export const LearnDeck = () => {
     };
 
     if (isLoading) {
-        return <Spinner thickness='4px' emptyColor='gray.200' size='xl' margin='auto' />;
+        return <Spinner />;
     }
 
     if (cards.length === 0) {
-        return (
-            <ColumnLayout>
-                <Alert
-                    variant='top-accent'
-                    status='error'
-                    flexDirection='column'
-                    alignItems='center'
-                    justifyContent='center'
-                    textAlign='center'
-                    minHeight='200px'
-                >
-                    <AlertIcon boxSize='40px' mr={0} />
-                    <AlertTitle mt={4} mb={1} fontSize='lg'>
-                        Колода не найдена!
-                    </AlertTitle>
-                    <AlertDescription maxWidth='sm'>
-                        Попробуйте обновить страницу или перейти в другую колоду
-                    </AlertDescription>
-                </Alert>
-
-                <NextLink href='/decks' passHref legacyBehavior>
-                    <Button as='a' width='100%'>
-                        На страницу колод
-                    </Button>
-                </NextLink>
-            </ColumnLayout>
-        );
+        return <NotFoundAlert />;
     }
 
     if (currentStep >= cards.length) {
-        return (
-            <ColumnLayout>
-                <Alert
-                    variant='top-accent'
-                    status='success'
-                    flexDirection='column'
-                    alignItems='center'
-                    justifyContent='center'
-                    textAlign='center'
-                    minHeight='200px'
-                >
-                    <AlertIcon boxSize='40px' mr={0} />
-                    <AlertTitle mt={4} mb={1} fontSize='lg'>
-                        Вы прошли все вопросы!
-                    </AlertTitle>
-                    <AlertDescription maxWidth='sm'>
-                        Результаты ваших ответов будут отображаться на странице изучаемых колод
-                    </AlertDescription>
-                </Alert>
-
-                <NextLink href='/decks' passHref legacyBehavior>
-                    <Button as='a' width='100%'>
-                        На страницу колод
-                    </Button>
-                </NextLink>
-            </ColumnLayout>
-        );
+        return <SuccessAlert />;
     }
 
     return (

@@ -1,9 +1,9 @@
 import { FC, useEffect, useState } from 'react';
-import { Card, CardHeader, Heading, CardFooter, Button, Text, Box } from '@chakra-ui/react';
+import { Card, CardHeader, CardFooter, Button, Text } from '@chakra-ui/react';
 
 import { Card as CardProps } from '../types';
-import { Editor } from '@/shared/ui/editor';
 import { ECardFieldMode } from '@/enums';
+import { Editor } from '@/shared/ui/editor';
 
 interface ContentProps {
     mode: ECardFieldMode;
@@ -12,10 +12,14 @@ interface ContentProps {
 
 const Content: FC<ContentProps> = ({ mode, value }) => {
     if (mode === ECardFieldMode.Text) {
-        return <Text as='pre'>{value}</Text>;
+        return (
+            <Text as='pre' whiteSpace='pre-wrap'>
+                {value}
+            </Text>
+        );
     }
 
-    return <Editor value={value} maxLines={Infinity} readOnly />;
+    return <Editor value={value} maxLines={30} minLines={8} readOnly />;
 };
 
 export const QuestionCard: FC<CardProps> = ({ id, question, questionMode, answer, answerMode }) => {
@@ -31,7 +35,7 @@ export const QuestionCard: FC<CardProps> = ({ id, question, questionMode, answer
 
     return (
         <Card variant='outline'>
-            <CardHeader maxHeight={400} overflow='auto'>
+            <CardHeader>
                 {isAnswerVisible ? (
                     <Content mode={answerMode} value={answer} />
                 ) : (
