@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/server/entities/prisma';
 import { getParamsFromInitData } from '@/server/shared/utils/getParamsFromInitData';
 
-const GetMe = async (req: NextApiRequest, res: NextApiResponse) => {
+const GetLearningDecks = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method == 'GET') {
         const userParams = getParamsFromInitData(req.cookies.initData || '', 'user');
 
@@ -12,9 +12,20 @@ const GetMe = async (req: NextApiRequest, res: NextApiResponse) => {
                 throw new Error('Пользователь не идентифицирован');
             }
 
+            const userId = JSON.parse(userParams).id.toString();
+
             const user = await prisma.user.findFirst({
                 where: {
-                    id: JSON.parse(userParams).id,
+                    id: userId,
+                },
+                include: {
+                    learningDecks: {
+                        include: {
+                            knownCards: true,
+                            unknownCards: true,
+                            deck: true,
+                        },
+                    },
                 },
             });
 
@@ -22,8 +33,13 @@ const GetMe = async (req: NextApiRequest, res: NextApiResponse) => {
                 throw new Error('Пользователь не найден');
             }
 
-            res.status(200).json(user);
+            const data = [...user.learningDecks];
+            console.log('[...user.learningDecks]', data);
+
+            res.status(200).json(data);
         } catch (error) {
+            console.log(error);
+
             res.status(400).json({ error });
         }
     } else {
@@ -31,4 +47,4 @@ const GetMe = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 };
 
-export default GetMe;
+export default GetLearningDecks;

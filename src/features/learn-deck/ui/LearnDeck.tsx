@@ -9,6 +9,7 @@ import { fetchCards } from '../api/fetchCards';
 import { QuestionCard } from './QuestionCard';
 import { SuccessAlert } from './SuccessAlert';
 import { NotFoundAlert } from './NotFoundAlert';
+import { fetchCreateLearningDeck } from '../api/fetchCreateLearningDeck';
 
 export const LearnDeck = () => {
     const router = useRouter();
@@ -16,6 +17,9 @@ export const LearnDeck = () => {
     const [cards, setCards] = useState<Card[]>([]);
     const [currentStep, setCurrentStep] = useState<number>(0);
     const [isLoading, setIsLoading] = useState(true);
+
+    const [knownCardIds, setKnownCardIds] = useState<string[]>([]);
+    const [unknownCardIds, setUnknownCardIds] = useState<string[]>([]);
 
     useEffect(() => {
         if (router.query.id) {
@@ -26,12 +30,24 @@ export const LearnDeck = () => {
         }
     }, [router]);
 
+    useEffect(() => {
+        if (!isLoading && currentStep >= cards.length && router.query.id) {
+            fetchCreateLearningDeck({
+                deckId: router.query.id.toString(),
+                knownIds: knownCardIds,
+                unknownIds: unknownCardIds,
+            });
+        }
+    }, [cards, currentStep, router, knownCardIds, unknownCardIds, isLoading]);
+
     const handleKnownClick = () => {
         setCurrentStep(prev => ++prev);
+        setKnownCardIds(prev => [...prev, cards[currentStep].id]);
     };
 
     const handleUnknownClick = () => {
         setCurrentStep(prev => ++prev);
+        setUnknownCardIds(prev => [...prev, cards[currentStep].id]);
     };
 
     if (isLoading) {

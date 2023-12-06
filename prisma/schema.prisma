@@ -11,24 +11,23 @@ datasource db {
 }
 
 model User {
-  id            BigInt         @id
+  id            String         @id
   name          String
-  username      String
-  role          Int
+  username      String         @unique
+  role          Int            @default(2)
   learningDecks LearningDeck[]
 }
 
 model Card {
-  id                       String        @id @default(uuid())
-  question                 String
-  questionMode             String?       @default("text")
-  answer                   String
-  answerMode               String?       @default("text")
-  deck                     Deck          @relation(fields: [deckId], references: [id])
-  deckId                   String
-  learningDeckKnownCards   LearningDeck? @relation("KnownCards", references: [id], fields: [learningDeckId])
-  learningDeckUnknownCards LearningDeck? @relation("UnknownCards", references: [id], fields: [learningDeckId])
-  learningDeckId           String?
+  id                        String         @id @default(uuid())
+  question                  String
+  questionMode              String         @default("text")
+  answer                    String
+  answerMode                String         @default("text")
+  deck                      Deck           @relation(fields: [deckId], references: [id])
+  deckId                    String
+  learningDecksKnownCards   LearningDeck[] @relation("KnownCards")
+  learningDecksUnknownCards LearningDeck[] @relation("UnknownCards")
 }
 
 model Deck {
@@ -44,7 +43,9 @@ model LearningDeck {
   deck         Deck   @relation(fields: [deckId], references: [id])
   user         User   @relation(fields: [userId], references: [id])
   deckId       String
-  userId       BigInt
+  userId       String
   knownCards   Card[] @relation("KnownCards")
   unknownCards Card[] @relation("UnknownCards")
+
+  @@unique([deckId, userId])
 }
