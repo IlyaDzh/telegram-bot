@@ -3,8 +3,12 @@ import { Alert, AlertDescription, AlertIcon, AlertTitle, Button } from '@chakra-
 import NextLink from 'next/link';
 
 import { ColumnLayout } from '@/shared/ui/layout';
+import { useTelegram } from '@/hooks/TelegramProvider';
+import { Role } from '@/types/user';
 
 export const NotFoundAlert = () => {
+    const { user } = useTelegram();
+
     return (
         <ColumnLayout>
             <Alert
@@ -23,11 +27,13 @@ export const NotFoundAlert = () => {
                 <AlertDescription maxWidth='sm'>Создайте колоду, если у вас есть необходимые права</AlertDescription>
             </Alert>
 
-            <NextLink href='/' passHref legacyBehavior>
-                <Button as='a' width='100%'>
-                    Создать колоду
-                </Button>
-            </NextLink>
+            {user && user.role === Role.admin && (
+                <NextLink href='/' passHref legacyBehavior>
+                    <Button as='a' width='100%'>
+                        Создать колоду
+                    </Button>
+                </NextLink>
+            )}
         </ColumnLayout>
     );
 };

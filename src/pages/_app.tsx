@@ -1,17 +1,21 @@
 import type { AppProps } from 'next/app';
-import { useEffect } from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
-import Cookies from 'js-cookie';
 
-import useTelegramInitData from '@/hooks/useTelegramInitData';
+import { TelegramProvider, useTelegram } from '@/hooks/TelegramProvider';
 import { theme } from '@/application/theme';
 
-export default function App({ Component, pageProps }: AppProps) {
-    const { initData, isLoading } = useTelegramInitData();
+function App({ Component, pageProps }: AppProps) {
+    const { isLoading } = useTelegram();
 
-    useEffect(() => {
-        Cookies.set('initData', initData, { expires: 30 });
-    }, [initData]);
+    return !isLoading && <Component {...pageProps} />;
+}
 
-    return <ChakraProvider theme={theme}>{!isLoading && <Component {...pageProps} />}</ChakraProvider>;
+export default function AppWrapper(props: AppProps) {
+    return (
+        <TelegramProvider>
+            <ChakraProvider theme={theme}>
+                <App {...props} />
+            </ChakraProvider>
+        </TelegramProvider>
+    );
 }

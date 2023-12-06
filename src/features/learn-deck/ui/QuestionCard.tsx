@@ -2,16 +2,16 @@ import { FC, useEffect, useState } from 'react';
 import { Card, CardHeader, CardFooter, Button, Text } from '@chakra-ui/react';
 
 import { Card as CardProps } from '../types';
-import { ECardFieldMode } from '@/enums';
+import { CardFieldMode } from '@/types/card';
 import { Editor } from '@/shared/ui/editor';
 
 interface ContentProps {
-    mode: ECardFieldMode;
+    mode: CardFieldMode;
     value: string;
 }
 
 const Content: FC<ContentProps> = ({ mode, value }) => {
-    if (mode === ECardFieldMode.Text) {
+    if (mode === CardFieldMode.Text) {
         return (
             <Text as='pre' whiteSpace='pre-wrap'>
                 {value}

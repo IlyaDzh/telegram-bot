@@ -4,7 +4,7 @@ import { Switch, Textarea } from '@chakra-ui/react';
 
 import { Field } from '@/shared/ui/field';
 import { Editor } from '@/shared/ui/editor';
-import { ECardFieldMode } from '@/enums';
+import { CardFieldMode } from '@/types/card';
 
 interface CardFieldProps {
     fieldName: string;
@@ -27,7 +27,7 @@ export const CardField: React.FC<CardFieldProps> = ({ fieldName, fieldNameMode, 
     };
 
     const handleSwitchMode = () => {
-        setValue(fieldNameMode, fieldMode === ECardFieldMode.Code ? ECardFieldMode.Text : ECardFieldMode.Code);
+        setValue(fieldNameMode, fieldMode === CardFieldMode.Code ? CardFieldMode.Text : CardFieldMode.Code);
     };
 
     return (
@@ -47,9 +47,7 @@ export const CardField: React.FC<CardFieldProps> = ({ fieldName, fieldNameMode, 
                     placeholder={placeholder}
                     aria-label={`card-${fieldName}-field`}
                     aria-errormessage={errorId}
-                    {...register(fieldName, {
-                        required: true,
-                    })}
+                    {...register(fieldName)}
                 />
             )}
 

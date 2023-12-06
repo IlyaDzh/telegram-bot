@@ -18,7 +18,7 @@ const bootServices = async () => {
 }
 
 const nextConfig = {
-    reactStrictMode: true,
+    reactStrictMode: false,
     experimental: {
         instrumentationHook: true
     }

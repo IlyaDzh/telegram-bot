@@ -11,11 +11,11 @@ datasource db {
 }
 
 model User {
-  id           BigInt         @id
-  name         String
-  username     String
-  role         Int
-  learningDeck LearningDeck[]
+  id            BigInt         @id
+  name          String
+  username      String
+  role          Int
+  learningDecks LearningDeck[]
 }
 
 model Card {

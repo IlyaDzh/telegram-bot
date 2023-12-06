@@ -12,6 +12,8 @@ import { Field } from '@/shared/ui/field';
 
 export const DECK_CARDS_COUNT_FIELD_NAME = 'cardsCount';
 
+const MIN_VALUE = 1;
+
 type DeckCardsCountFormField = { [DECK_CARDS_COUNT_FIELD_NAME]: number };
 
 export const DeckCardsCountField = () => {
@@ -21,7 +23,7 @@ export const DeckCardsCountField = () => {
     const count = watch(DECK_CARDS_COUNT_FIELD_NAME);
 
     const handleCountChange = (_: string, value: number) => {
-        setValue(DECK_CARDS_COUNT_FIELD_NAME, value);
+        setValue(DECK_CARDS_COUNT_FIELD_NAME, value || MIN_VALUE);
     };
 
     return (
@@ -31,6 +33,7 @@ export const DeckCardsCountField = () => {
                 onChange={handleCountChange}
                 aria-label='deck-cards-count-field'
                 aria-errormessage={errorId}
+                min={MIN_VALUE}
                 allowMouseWheel
             >
                 <NumberInputField />

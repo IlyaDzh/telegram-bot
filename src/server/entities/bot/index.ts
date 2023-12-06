@@ -1,6 +1,7 @@
 import TelegramBot from 'node-telegram-bot-api';
+
 import prisma from '@/server/entities/prisma';
-import { Role } from '@/server/entities/bot/types/user';
+import { Role } from '@/types/user';
 
 const token = process.env.BOT_TOKEN as string;
 const URL = process.env.NEXT_PUBLIC_BASE_URL as string;

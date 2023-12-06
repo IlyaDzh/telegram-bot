@@ -1,9 +1,9 @@
-import { ECardFieldMode } from '@/enums';
+import { CardFieldMode } from '@/types/card';
 
 export interface Card {
     id: string;
     question: string;
-    questionMode: ECardFieldMode;
+    questionMode: CardFieldMode;
     answer: string;
-    answerMode: ECardFieldMode;
+    answerMode: CardFieldMode;
 }

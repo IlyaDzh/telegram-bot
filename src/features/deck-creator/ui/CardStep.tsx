@@ -1,6 +1,8 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { Box, Button, Heading, Text } from '@chakra-ui/react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 import { CreateCardData } from '../types';
 import {
@@ -13,7 +15,7 @@ import {
 } from '@/entities/card';
 import { ColumnLayout } from '@/shared/ui/layout';
 import { db } from '@/db';
-import { ECardFieldMode } from '@/enums';
+import { CardFieldMode } from '@/types/card';
 
 type Props = {
     cardIndex: number;
@@ -23,15 +25,25 @@ type Props = {
     onClose: () => void;
 };
 
+const schema = yup
+    .object({
+        [CARD_QUESTION_FIELD_NAME]: yup.string().required(),
+        [CARD_ANSWER_FIELD_NAME]: yup.string().required(),
+        [CARD_QUESTION_FIELD_MODE]: yup.string().required(),
+        [CARD_ANSWER_FIELD_MODE]: yup.string().required(),
+    })
+    .required();
+
 const CardStep: FC<Props> = ({ cardIndex, onNextStep, onPrevStep, onSaveDeck, onClose }) => {
     const [maxCardsCount, setMaxCount] = useState(0);
 
     const methods = useForm<CreateCardData>({
         mode: 'onBlur',
         defaultValues: {
-            questionMode: ECardFieldMode.Text,
-            answerMode: ECardFieldMode.Text,
+            questionMode: CardFieldMode.Text,
+            answerMode: CardFieldMode.Text,
         },
+        resolver: yupResolver(schema),
     });
 
     const isLastCard = cardIndex === maxCardsCount;
