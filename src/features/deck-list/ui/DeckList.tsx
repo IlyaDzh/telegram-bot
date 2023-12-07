@@ -43,7 +43,11 @@ export const DeckList = () => {
                 <Input onChange={handleSearchChange} value={searchValue} placeholder='Поиск' />
             </Box>
 
-            {isLoading && <Spinner />}
+            {isLoading && (
+                <Box display='grid'>
+                    <Spinner />
+                </Box>
+            )}
 
             {decks.length === 0 && !isLoading && <NotFoundAlert />}
 

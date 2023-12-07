@@ -18,25 +18,27 @@ export const LearningDeckList = () => {
         });
     }, []);
 
-    if (isLoading) {
-        return <Spinner />;
-    }
-
-    if (decks.length === 0) {
-        return <NotFoundAlert />;
-    }
-
     return (
         <Box>
             <Heading as='h1' mb={6}>
                 Изучаемые колоды
             </Heading>
 
-            <Box display='grid' gap={6} mb={5}>
-                {decks.map((deck, index) => (
-                    <LearningDeckCard key={index} {...deck} />
-                ))}
-            </Box>
+            {isLoading && (
+                <Box display='grid'>
+                    <Spinner />
+                </Box>
+            )}
+
+            {decks.length === 0 && !isLoading && <NotFoundAlert />}
+
+            {!isLoading && (
+                <Box display='grid' gap={6} mb={5}>
+                    {decks.map((deck, index) => (
+                        <LearningDeckCard key={index} {...deck} />
+                    ))}
+                </Box>
+            )}
         </Box>
     );
 };
