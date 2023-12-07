@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@chakra-ui/react';
+import { Box, Button } from '@chakra-ui/react';
 import NextLink from 'next/link';
 
 import { ColumnLayout } from '@/shared/ui/layout';
@@ -14,11 +14,19 @@ export const SuccessAlert = () => {
                 description='Результаты ваших ответов будут отображаться на странице изучаемых колод'
             />
 
-            <NextLink href='/decks' passHref legacyBehavior>
-                <Button as='a' width='100%'>
-                    На страницу колод
-                </Button>
-            </NextLink>
+            <Box display='grid' gap={2}>
+                <NextLink href='/learning-decks' passHref legacyBehavior>
+                    <Button as='a' width='100%'>
+                        Перейти в изучаемые колоды
+                    </Button>
+                </NextLink>
+
+                <NextLink href='/decks' passHref legacyBehavior>
+                    <Button as='a' width='100%'>
+                        На страницу колод
+                    </Button>
+                </NextLink>
+            </Box>
         </ColumnLayout>
     );
 };

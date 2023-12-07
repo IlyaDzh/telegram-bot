@@ -40,9 +40,11 @@ const CreateLearningDeck = async (req: NextApiRequest, res: NextApiResponse) => 
                 },
                 update: {
                     knownCards: {
+                        set: [],
                         connect: knownIds.map((id: string) => ({ id })),
                     },
                     unknownCards: {
+                        set: [],
                         connect: unknownIds.map((id: string) => ({ id })),
                     },
                 },
