@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box } from '@chakra-ui/react';
+import { Box, Heading } from '@chakra-ui/react';
 
 import { Spinner } from '@/shared/ui/spinner';
 import { fetchDecks } from '../api/fetchDecks';
@@ -28,6 +28,8 @@ export const DeckList = () => {
 
     return (
         <Box display='grid' gap={6}>
+            <Heading as='h1'>Список колод</Heading>
+
             {decks.map((deck, index) => (
                 <DeckCard key={index} {...deck} />
             ))}

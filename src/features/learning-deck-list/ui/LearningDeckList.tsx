@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box } from '@chakra-ui/react';
+import { Box, Heading } from '@chakra-ui/react';
 
 import { Spinner } from '@/shared/ui/spinner';
 import { fetchLearningDecks } from '../api/fetchLearningDecks';
@@ -28,6 +28,8 @@ export const LearningDeckList = () => {
 
     return (
         <Box display='grid' gap={6}>
+            <Heading as='h1'>Изучаемые колоды</Heading>
+
             {decks.map((deck, index) => (
                 <LearningDeckCard key={index} {...deck} />
             ))}
