@@ -27,12 +27,16 @@ export const LearningDeckList = () => {
     }
 
     return (
-        <Box display='grid' gap={6}>
-            <Heading as='h1'>Изучаемые колоды</Heading>
+        <Box>
+            <Heading as='h1' mb={6}>
+                Изучаемые колоды
+            </Heading>
 
-            {decks.map((deck, index) => (
-                <LearningDeckCard key={index} {...deck} />
-            ))}
+            <Box display='grid' gap={6} mb={5}>
+                {decks.map((deck, index) => (
+                    <LearningDeckCard key={index} {...deck} />
+                ))}
+            </Box>
         </Box>
     );
 };

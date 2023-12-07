@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Heading } from '@chakra-ui/react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Box, Heading, Input } from '@chakra-ui/react';
 
 import { Spinner } from '@/shared/ui/spinner';
 import { fetchDecks } from '../api/fetchDecks';
@@ -10,29 +10,50 @@ import { NotFoundAlert } from './NotFoundAlert';
 export const DeckList = () => {
     const [decks, setDecks] = useState<Deck[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [searchValue, setSearchValue] = useState('');
 
     useEffect(() => {
-        fetchDecks().then(({ data }) => {
-            setDecks(data);
-            setIsLoading(false);
-        });
+        setIsLoading(true);
+
+        fetchDecks()
+            .then(({ data }) => {
+                setDecks(data);
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
     }, []);
 
-    if (isLoading) {
-        return <Spinner />;
-    }
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchValue(event.target.value);
+    };
 
-    if (decks.length === 0) {
-        return <NotFoundAlert />;
-    }
+    const filteredDecks = useMemo(
+        () => decks.filter(deck => deck.title.toLowerCase().includes(searchValue.toLowerCase())),
+        [decks, searchValue],
+    );
+
+    const displayedDecks = searchValue ? filteredDecks : decks;
 
     return (
-        <Box display='grid' gap={6}>
-            <Heading as='h1'>Список колод</Heading>
+        <Box>
+            <Box display='grid' gap={3} mb={8}>
+                <Heading as='h1'>Список колод</Heading>
 
-            {decks.map((deck, index) => (
-                <DeckCard key={index} {...deck} />
-            ))}
+                <Input onChange={handleSearchChange} value={searchValue} placeholder='Поиск' />
+            </Box>
+
+            {isLoading && <Spinner />}
+
+            {decks.length === 0 && !isLoading && <NotFoundAlert />}
+
+            {!isLoading && (
+                <Box display='grid' gap={6} mb={5}>
+                    {displayedDecks.map((deck, index) => (
+                        <DeckCard key={index} {...deck} />
+                    ))}
+                </Box>
+            )}
         </Box>
     );
 };
