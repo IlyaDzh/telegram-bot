@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { Card, CardHeader, CardFooter, Button, Text } from '@chakra-ui/react';
 
-import { Card as CardProps } from '../types';
+import { Card as CardProps } from '@/types/card';
 import { CardFieldMode } from '@/types/card';
 import { Editor } from '@/shared/ui/editor';
 

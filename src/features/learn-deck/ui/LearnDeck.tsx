@@ -4,12 +4,12 @@ import { Box, Button } from '@chakra-ui/react';
 
 import { ColumnLayout } from '@/shared/ui/layout';
 import { Spinner } from '@/shared/ui/spinner';
-import { Card } from '../types';
+import { Card } from '@/types/card';
+import { fetchCreateLearningDeck } from '../api/fetchCreateLearningDeck';
 import { fetchCards } from '../api/fetchCards';
 import { QuestionCard } from './QuestionCard';
 import { SuccessAlert } from './SuccessAlert';
 import { NotFoundAlert } from './NotFoundAlert';
-import { fetchCreateLearningDeck } from '../api/fetchCreateLearningDeck';
 
 export const LearnDeck = () => {
     const router = useRouter();

@@ -1,6 +1,5 @@
-export interface Deck {
-    id: string;
-    title: string;
-    category: string;
+import { Deck as BaseDeck } from '@/types/deck';
+
+export interface Deck extends BaseDeck {
     questionsCount: number;
 }

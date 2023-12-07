@@ -3,7 +3,7 @@ import NextLink from 'next/link';
 import { Card, CardHeader, Heading, CardFooter, Button, Text, Box } from '@chakra-ui/react';
 
 import { Deck } from '../types';
-import { getQuestionsCountText } from '../utils/formatQuestionsCount';
+import { getQuestionsCountText } from '@/shared/utils/formatQuestionsCount';
 
 export const DeckCard: FC<Deck> = ({ id, title, category, questionsCount }) => {
     return (

@@ -1,8 +1,9 @@
 import React from 'react';
-import { Alert, AlertDescription, AlertIcon, AlertTitle, Button } from '@chakra-ui/react';
+import { Button } from '@chakra-ui/react';
 import NextLink from 'next/link';
 
 import { ColumnLayout } from '@/shared/ui/layout';
+import { Alert } from '@/shared/ui/alert';
 import { useTelegram } from '@/hooks/TelegramProvider';
 import { Role } from '@/types/user';
 
@@ -12,20 +13,10 @@ export const NotFoundAlert = () => {
     return (
         <ColumnLayout>
             <Alert
-                variant='top-accent'
                 status='error'
-                flexDirection='column'
-                alignItems='center'
-                justifyContent='center'
-                textAlign='center'
-                minHeight='200px'
-            >
-                <AlertIcon boxSize='40px' mr={0} />
-                <AlertTitle mt={4} mb={1} fontSize='lg'>
-                    Колод не найдено!
-                </AlertTitle>
-                <AlertDescription maxWidth='sm'>Создайте колоду, если у вас есть необходимые права</AlertDescription>
-            </Alert>
+                title='Колод не найдено!'
+                description='Создайте колоду, если у вас есть необходимые права'
+            />
 
             {user && user.role === Role.admin && (
                 <NextLink href='/' passHref legacyBehavior>

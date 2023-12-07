@@ -1,22 +1,9 @@
-import { CardFieldMode } from '@/types/card';
+import { Card } from '@/types/card';
+import { Deck } from '@/types/deck';
 
 export interface LearningDeck {
     id: string;
     deck: Deck;
     knownCards: Card[];
     unknownCards: Card[];
-}
-
-interface Card {
-    id: string;
-    question: string;
-    questionMode: CardFieldMode;
-    answer: string;
-    answerMode: CardFieldMode;
-}
-
-interface Deck {
-    id: string;
-    title: string;
-    category: string;
 }

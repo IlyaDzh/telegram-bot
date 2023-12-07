@@ -1,4 +1,4 @@
-import { Card } from '../types';
+import { Card } from '@/types/card';
 
 export async function fetchCards(deckId: string): Promise<Card[]> {
     return await fetch(`/api/getCards?deckId=${deckId}`, {
