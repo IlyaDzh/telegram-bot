@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { TelegramWebApps } from 'telegram-webapps-types';
 import Cookies from 'js-cookie';
+import axios, { AxiosResponse } from 'axios';
 
 import { User } from '@/types/user';
 
@@ -9,17 +10,13 @@ export interface ITelegramContext {
     initData: TelegramWebApps.WebApp['initData'];
     user: User | null;
     isLoading: boolean;
+    isError: boolean;
 }
-
-const fetchUserData = async () => {
-    return await fetch('/api/getMe', {
-        method: 'GET',
-    }).then(res => res.json());
-};
 
 export const TelegramContext = createContext<ITelegramContext>({
     initData: '',
     isLoading: false,
+    isError: false,
     webApp: null,
     user: null,
 });
@@ -28,6 +25,7 @@ export const TelegramProvider = ({ children }: { children: React.ReactNode }) =>
     const [webApp, setWebApp] = useState<TelegramWebApps.WebApp | null>(null);
     const [user, setUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [isError, setIsError] = useState(false);
 
     useEffect(() => {
         const app = (window as any).Telegram?.WebApp as TelegramWebApps.WebApp;
@@ -38,10 +36,17 @@ export const TelegramProvider = ({ children }: { children: React.ReactNode }) =>
 
             Cookies.set('initData', app.initData, { expires: 30 });
 
-            fetchUserData().then(data => {
-                setUser(data);
-                setIsLoading(false);
-            });
+            axios
+                .get('/api/getMe')
+                .then((data: AxiosResponse<User>) => {
+                    setUser(data.data);
+                })
+                .catch(() => {
+                    setIsError(true);
+                })
+                .finally(() => {
+                    setIsLoading(false);
+                });
         }
     }, []);
 
@@ -51,8 +56,9 @@ export const TelegramProvider = ({ children }: { children: React.ReactNode }) =>
             initData: webApp ? webApp.initData : '',
             user,
             isLoading,
+            isError,
         };
-    }, [isLoading, user, webApp]);
+    }, [isError, isLoading, user, webApp]);
 
     return <TelegramContext.Provider value={value}>{children}</TelegramContext.Provider>;
 };

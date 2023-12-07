@@ -1,7 +1,7 @@
+import axios from 'axios';
+
 import { Deck } from '../types';
 
-export async function fetchDecks(): Promise<Deck[]> {
-    return await fetch('/api/getDecks', {
-        method: 'GET',
-    }).then(res => res.json());
+export async function fetchDecks() {
+    return await axios.get<Deck[]>('/api/getDecks');
 }

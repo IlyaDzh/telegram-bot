@@ -12,8 +12,8 @@ export const LearningDeckList = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        fetchLearningDecks().then(decks => {
-            setDecks(decks);
+        fetchLearningDecks().then(({ data }) => {
+            setDecks(data);
             setIsLoading(false);
         });
     }, []);

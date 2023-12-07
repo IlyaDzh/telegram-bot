@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import { CreateCardData } from '../types';
 
 type CreateDeckPayload = {
@@ -7,13 +9,5 @@ type CreateDeckPayload = {
 };
 
 export async function fetchCreateDeck(payload: CreateDeckPayload) {
-    return await fetch('/api/createDeck', {
-        method: 'POST',
-        headers: {
-            'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-            ...payload,
-        }),
-    }).then(res => res.json());
+    return await axios.post('/api/createDeck', payload);
 }

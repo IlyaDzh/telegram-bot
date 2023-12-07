@@ -1,6 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import prisma from '@/server/entities/prisma';
+import { getErrorMessage } from '@/server/shared/utils/getErrorMessage';
+import middleware from '@/server/shared/utils/_middleware';
 
 const CreateDeck = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method == 'POST') {
@@ -19,11 +21,11 @@ const CreateDeck = async (req: NextApiRequest, res: NextApiResponse) => {
 
             res.status(201).json({ status: true });
         } catch (error) {
-            res.status(400).json({ error });
+            res.status(400).json({ error: getErrorMessage(error) });
         }
     } else {
-        res.status(404).json({ error: 'Это POST метод' });
+        res.status(404).json({ error: 'Метод не найден' });
     }
 };
 
-export default CreateDeck;
+export default middleware(CreateDeck);

@@ -4,7 +4,7 @@ import NextLink from 'next/link';
 
 import { ColumnLayout } from '@/shared/ui/layout';
 import { Alert } from '@/shared/ui/alert';
-import { useTelegram } from '@/hooks/TelegramProvider';
+import { useTelegram } from '@/hooks/useTelegram';
 import { Role } from '@/types/user';
 
 export const NotFoundAlert = () => {

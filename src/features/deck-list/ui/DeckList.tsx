@@ -12,8 +12,8 @@ export const DeckList = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        fetchDecks().then(decks => {
-            setDecks(decks);
+        fetchDecks().then(({ data }) => {
+            setDecks(data);
             setIsLoading(false);
         });
     }, []);

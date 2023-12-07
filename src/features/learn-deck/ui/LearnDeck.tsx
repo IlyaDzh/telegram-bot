@@ -23,8 +23,8 @@ export const LearnDeck = () => {
 
     useEffect(() => {
         if (router.query.id) {
-            fetchCards(router.query.id.toString()).then(cards => {
-                setCards(cards);
+            fetchCards(router.query.id.toString()).then(({ data }) => {
+                setCards(data);
                 setIsLoading(false);
             });
         }

@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 type CreateLearningDeckPayload = {
     deckId: string;
     knownIds: string[];
@@ -5,13 +7,5 @@ type CreateLearningDeckPayload = {
 };
 
 export async function fetchCreateLearningDeck(payload: CreateLearningDeckPayload) {
-    return await fetch('/api/createLearningDeck', {
-        method: 'POST',
-        headers: {
-            'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-            ...payload,
-        }),
-    }).then(res => res.json());
+    return await axios.post('/api/createLearningDeck', payload);
 }

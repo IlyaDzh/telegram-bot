@@ -2,6 +2,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 import prisma from '@/server/entities/prisma';
 import { getParamsFromInitData } from '@/server/shared/utils/getParamsFromInitData';
+import { getErrorMessage } from '@/server/shared/utils/getErrorMessage';
+import middleware from '@/server/shared/utils/_middleware';
 
 const CreateLearningDeck = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method == 'POST') {
@@ -52,11 +54,11 @@ const CreateLearningDeck = async (req: NextApiRequest, res: NextApiResponse) => 
 
             res.status(201).json({ status: true });
         } catch (error) {
-            res.status(400).json({ error });
+            res.status(400).json({ error: getErrorMessage(error) });
         }
     } else {
-        res.status(404).json({ error: 'Это POST метод' });
+        res.status(404).json({ error: 'Метод не найден' });
     }
 };
 
-export default CreateLearningDeck;
+export default middleware(CreateLearningDeck);
