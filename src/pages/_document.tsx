@@ -5,7 +5,7 @@ export default function Document() {
     return (
         <Html lang='ru'>
             <Head>
-                <Script src='https://telegram.org/js/telegram-web-app.js' strategy='beforeInteractive' />
+                <Script src='/static/telegram-web-app.js' strategy='beforeInteractive' />
             </Head>
             <body>
                 <Main />
