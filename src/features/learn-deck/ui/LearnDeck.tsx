@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Box, Button, Heading } from '@chakra-ui/react';
+import { Box, Button, Progress } from '@chakra-ui/react';
 
 import { ColumnLayout } from '@/shared/ui/layout';
 import { Spinner } from '@/shared/ui/spinner';
@@ -65,9 +65,14 @@ export const LearnDeck = () => {
     return (
         <ColumnLayout>
             <Box display='grid' gap={5}>
-                <Heading as='h1' size='md'>
-                    Карта {currentStep + 1}/{cards.length}
-                </Heading>
+                <Progress
+                    hasStripe
+                    value={currentStep}
+                    max={cards.length}
+                    size='sm'
+                    backgroundColor='var(--tg-theme-bg-color)'
+                    isAnimated
+                />
 
                 <QuestionCard {...cards[currentStep]} />
             </Box>
