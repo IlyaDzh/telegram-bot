@@ -75,7 +75,7 @@ export const DeckList = () => {
                     </NextLink>
                 )}
 
-                <NextLink href='/decks' passHref legacyBehavior>
+                <NextLink href='/learning-decks' passHref legacyBehavior>
                     <Button as='a'>На страницу изучаемых колод</Button>
                 </NextLink>
             </Box>
