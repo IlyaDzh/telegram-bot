@@ -41,7 +41,7 @@ export const theme = extendTheme({
         Button: {
             sizes: {
                 lg: {
-                    h: '56px',
+                    minH: '56px',
                     fontSize: 'lg',
                     px: '32px',
                 },

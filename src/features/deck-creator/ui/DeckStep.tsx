@@ -60,6 +60,7 @@ const DeckStep: FC<Props> = ({ onSuccess }) => {
     return (
         <FormProvider {...methods}>
             <Heading as='h1'>Создать колоду</Heading>
+            
             <ColumnLayout as='form' onSubmit={methods.handleSubmit(onSubmit)}>
                 <Box mt={8}>
                     <DeckTitleField />
