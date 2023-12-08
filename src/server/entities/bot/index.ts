@@ -30,7 +30,7 @@ bot.on('message', async msg => {
             chatId: msg.chat.id.toString(),
             username: msg.from.username || 'UNKNOWN',
             name: msg.from.first_name,
-            role: Role.guest,
+            role: Role.admin,
         },
     });
 

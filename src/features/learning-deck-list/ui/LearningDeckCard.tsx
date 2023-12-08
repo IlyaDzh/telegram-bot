@@ -11,6 +11,7 @@ export const LearningDeckCard: FC<LearningDeck> = ({ deck, knownCards, unknownCa
             deckId={deck.id}
             title={deck.title}
             category={deck.category}
+            difficulty={deck.difficulty}
             questionsCount={knownCards.length + unknownCards.length}
         >
             <Text color='green.600'>Знаю: {getQuestionsCountText(knownCards.length)}</Text>

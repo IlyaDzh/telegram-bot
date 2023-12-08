@@ -8,7 +8,7 @@ import { Role } from '@/types/user';
 
 const CreateDeck = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method == 'POST') {
-        const { title, category, cards } = req.body;
+        const { title, category, difficulty, cards } = req.body;
 
         const userParams = getParamsFromInitData(req.cookies.initData || '', 'user');
 
@@ -37,6 +37,7 @@ const CreateDeck = async (req: NextApiRequest, res: NextApiResponse) => {
                 data: {
                     title: title,
                     category: category,
+                    difficulty: difficulty,
                     cards: {
                         create: cards,
                     },

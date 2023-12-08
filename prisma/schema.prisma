@@ -36,6 +36,7 @@ model Deck {
   id            String         @id @default(uuid())
   title         String
   category      String
+  difficulty    Int
   cards         Card[]
   learningDecks LearningDeck[]
 }

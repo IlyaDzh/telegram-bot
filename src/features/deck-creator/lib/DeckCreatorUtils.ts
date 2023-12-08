@@ -36,6 +36,7 @@ export class DeckCreatorUtils {
         return {
             title: deck?.title || '',
             category: deck?.category || '',
+            difficulty: Number(deck?.difficulty) || 0,
             cards: (cards || []).map(card => ({
                 question: card.question,
                 questionMode: card.questionMode,

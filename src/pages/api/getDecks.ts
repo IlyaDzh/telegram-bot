@@ -41,6 +41,7 @@ const GetDeckList = async (req: NextApiRequest, res: NextApiResponse) => {
                 id: deck.id,
                 title: deck.title,
                 category: deck.category,
+                difficulty: deck.difficulty,
                 questionsCount: deck.cards.length,
                 isNew: !learningDecksIds.includes(deck.id),
             }));

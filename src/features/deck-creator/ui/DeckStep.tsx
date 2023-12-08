@@ -11,9 +11,12 @@ import {
     DeckCategoryField,
     DeckTitleField,
     DeckCardsCountField,
+    DeckDifficultyField,
+    DECK_DIFFICULTY_FIELD_NAME,
 } from '@/entities/deck';
 import { db } from '@/db';
 import { ColumnLayout } from '@/shared/ui/layout';
+import { Difficulty } from '@/types/deck';
 
 type Props = {
     onSuccess: () => void;
@@ -24,6 +27,7 @@ const DeckStep: FC<Props> = ({ onSuccess }) => {
         mode: 'onBlur',
         defaultValues: {
             cardsCount: DEFAULT_MAX_CARD_COUNTS,
+            difficulty: Difficulty.ease,
         },
     });
 
@@ -35,6 +39,7 @@ const DeckStep: FC<Props> = ({ onSuccess }) => {
                 if (deckData) {
                     methods.setValue(DECK_TITLE_FIELD_NAME, deckData.title);
                     methods.setValue(DECK_CATEGORY_FIELD_NAME, deckData.category);
+                    methods.setValue(DECK_DIFFICULTY_FIELD_NAME, deckData.difficulty);
                     methods.setValue(DECK_CARDS_COUNT_FIELD_NAME, deckData.cardsCount);
                 }
             } catch {}
@@ -60,11 +65,12 @@ const DeckStep: FC<Props> = ({ onSuccess }) => {
     return (
         <FormProvider {...methods}>
             <Heading as='h1'>Создать колоду</Heading>
-            
+
             <ColumnLayout as='form' onSubmit={methods.handleSubmit(onSubmit)}>
                 <Box mt={8}>
                     <DeckTitleField />
                     <DeckCategoryField />
+                    <DeckDifficultyField />
                     <DeckCardsCountField />
                 </Box>
                 <Button type='submit'>Далее</Button>

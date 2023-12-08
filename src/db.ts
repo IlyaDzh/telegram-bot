@@ -15,7 +15,7 @@ export class IndexedDBWrapper extends Dexie {
 
         this.version(1).stores({
             cards: 'id, question, questionMode, answer, answerMode',
-            deck: 'title, category, cardsCount',
+            deck: 'title, category, difficulty, cardsCount',
         });
     }
 }
