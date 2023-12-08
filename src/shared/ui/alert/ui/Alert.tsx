@@ -18,10 +18,10 @@ export const Alert: FC<Props> = ({ title, description, ...props }) => {
             {...props}
         >
             <AlertIcon boxSize='40px' mr={0} />
-            <AlertTitle mt={4} mb={1} fontSize='lg'>
+            <AlertTitle mt={4} mb={1} fontSize='lg' color="gray.900">
                 {title}
             </AlertTitle>
-            <AlertDescription maxWidth='sm'>{description}</AlertDescription>
+            <AlertDescription maxWidth='sm' color="gray.700">{description}</AlertDescription>
         </BaseAlert>
     );
 };

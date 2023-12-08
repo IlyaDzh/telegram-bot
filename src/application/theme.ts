@@ -10,6 +10,24 @@ export const theme = extendTheme({
         },
     },
     components: {
+        NumberInput: {
+            variants: {
+                outline: {
+                    stepper: {
+                        color: 'var(--tg-theme-text-color)',
+                    },
+                },
+            },
+        },
+        Card: {
+            variants: {
+                outline: {
+                    container: {
+                        backgroundColor: 'var(--tg-theme-bg-color)',
+                    },
+                },
+            },
+        },
         Spinner: {
             variants: {
                 initial: {
@@ -21,7 +39,6 @@ export const theme = extendTheme({
             },
         },
         Button: {
-            // 2. We can add a new button size or extend existing
             sizes: {
                 lg: {
                     h: '56px',
@@ -29,7 +46,6 @@ export const theme = extendTheme({
                     px: '32px',
                 },
             },
-            // 3. We can add a new visual variant
             variants: {
                 solid: {
                     bg: 'var(--tg-theme-button-color)',
@@ -44,10 +60,9 @@ export const theme = extendTheme({
                     },
                 },
             },
-            // 6. We can overwrite defaultProps
             defaultProps: {
-                size: 'lg', // default is md
-                variant: 'solid', // default is solid
+                size: 'lg',
+                variant: 'solid',
             },
         },
     },

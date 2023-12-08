@@ -13,7 +13,7 @@ interface ContentProps {
 const Content: FC<ContentProps> = ({ mode, value }) => {
     if (mode === CardFieldMode.Text) {
         return (
-            <Text as='pre' whiteSpace='pre-wrap'>
+            <Text as='pre' whiteSpace='pre-wrap' color='var(--tg-theme-text-color)'>
                 {value}
             </Text>
         );

@@ -10,11 +10,11 @@ export const LearningDeckCard: FC<LearningDeck> = ({ deck, knownCards, unknownCa
         <Card variant='outline'>
             <CardHeader>
                 <Box display='flex' alignItems='center' justifyContent='space-between' gap={4} mb={1}>
-                    <Heading size='sm' as='h2' color='gray.600' fontWeight='400'>
+                    <Heading size='sm' as='h2' color='var(--tg-theme-hint-color)' fontWeight='400'>
                         {deck.category}
                     </Heading>
                 </Box>
-                <Heading size='md' as='h1'>
+                <Heading size='md' as='h1' color='var(--tg-theme-text-color)'>
                     {deck.title}
                 </Heading>
             </CardHeader>

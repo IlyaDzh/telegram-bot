@@ -10,12 +10,12 @@ export const DeckCard: FC<Deck> = ({ id, title, category, questionsCount, isNew 
         <Card variant='outline'>
             <CardHeader>
                 <Box display='flex' alignItems='center' justifyContent='space-between' gap={4} mb={1}>
-                    <Heading size='sm' as='h2' color='gray.600' fontWeight='400'>
+                    <Heading size='sm' as='h2' color='var(--tg-theme-hint-color)' fontWeight='400'>
                         {category} {isNew && <Badge colorScheme='green'>NEW</Badge>}
                     </Heading>
-                    <Text color='gray.600'>{getQuestionsCountText(questionsCount)}</Text>
+                    <Text color='var(--tg-theme-text-color)'>{getQuestionsCountText(questionsCount)}</Text>
                 </Box>
-                <Heading size='md' as='h1'>
+                <Heading size='md' as='h1' color='var(--tg-theme-text-color)'>
                     {title}
                 </Heading>
             </CardHeader>
