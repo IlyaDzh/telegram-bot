@@ -23,7 +23,7 @@ export const getStartKeyboards = (role: Role) => {
     ];
 
     if (role === Role.admin) {
-        keyboards.unshift([{ text: 'Создать колоду', web_app: { url: URL } }]);
+        keyboards.unshift([{ text: 'Создать колоду', web_app: { url: `${URL}/` } }]);
     }
 
     return keyboards;
