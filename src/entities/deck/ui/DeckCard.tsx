@@ -26,7 +26,9 @@ export const DeckCard: FC<Props> = ({ deckId, title, category, questionsCount, i
                     {title}
                 </Heading>
             </CardHeader>
-            <CardBody pt={0}>{children}</CardBody>
+
+            {children && <CardBody pt={0}>{children}</CardBody>}
+
             <CardFooter p={0}>
                 <NextLink href={`/decks/${deckId}`} passHref legacyBehavior>
                     <Button as='a' width='100%'>
