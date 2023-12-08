@@ -1,10 +1,11 @@
 import TelegramBot from 'node-telegram-bot-api';
+import cron from 'node-cron';
 
 import prisma from '@/server/entities/prisma';
 import { Role } from '@/types/user';
+import { generateNotificationMessage, getStartKeyboards } from '@/server/shared/utils/botUtils';
 
 const token = process.env.BOT_TOKEN as string;
-const URL = process.env.NEXT_PUBLIC_BASE_URL as string;
 
 const bot = new TelegramBot(token, { polling: true });
 
@@ -26,6 +27,7 @@ bot.on('message', async msg => {
         update: {},
         create: {
             id: msg.from.id.toString(),
+            chatId: msg.chat.id.toString(),
             username: msg.from.username || 'UNKNOWN',
             name: msg.from.first_name,
             role: Role.guest,
@@ -33,16 +35,9 @@ bot.on('message', async msg => {
     });
 
     if (msg.text === '/start') {
-        const keyboards = [
-            [{ text: 'Список всех колод', web_app: { url: `${URL}/decks` } }],
-            [{ text: 'Изучаемые колоды', web_app: { url: `${URL}/learning-decks` } }],
-        ];
+        const keyboards = getStartKeyboards(user.role);
 
-        if (user.role === Role.admin) {
-            keyboards.unshift([{ text: 'Создать колоду', web_app: { url: URL } }]);
-        }
-
-        return bot.sendMessage(chatId, 'Привет 👋\nВыбирай нужную опцию и приступай к изучению материала', {
+        return bot.sendMessage(chatId, 'Привет 👋\n\nВыбирай нужную опцию и приступай к изучению материала', {
             reply_markup: {
                 resize_keyboard: true,
                 inline_keyboard: keyboards,
@@ -51,6 +46,36 @@ bot.on('message', async msg => {
     }
 
     bot.sendMessage(chatId, 'Больше команд нет. Напиши /start чтобы начать');
+});
+
+const sendDailyNotification = async () => {
+    try {
+        const users = await prisma.user.findMany({
+            include: {
+                learningDecks: {
+                    include: {
+                        unknownCards: true,
+                    },
+                },
+            },
+        });
+
+        for (const user of users) {
+            const unknownCounts = user.learningDecks.reduce((acc, deck) => acc + deck.unknownCards.length, 0);
+
+            if (unknownCounts > 0) {
+                const message = generateNotificationMessage(user.username, unknownCounts);
+
+                bot.sendMessage(user.chatId, message);
+            }
+        }
+    } catch (error) {
+        console.error('Error sending daily notification:', error);
+    }
+};
+
+cron.schedule('0 12 * * *', sendDailyNotification, {
+    timezone: 'Europe/Moscow',
 });
 
 export {};

@@ -12,6 +12,7 @@ datasource db {
 
 model User {
   id            String         @id
+  chatId        String
   name          String
   username      String         @unique
   role          Int            @default(2)

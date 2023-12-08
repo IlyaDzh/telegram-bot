@@ -22,6 +22,7 @@
     "framer-motion": "^10.16.5",
     "js-cookie": "^3.0.5",
     "next": "14.0.2",
+    "node-cron": "^3.0.3",
     "node-telegram-bot-api": "^0.64.0",
     "react": "^18",
     "react-ace": "^10.1.0",
@@ -32,6 +33,7 @@
   },
   "devDependencies": {
     "@types/node": "^20",
+    "@types/node-cron": "^3.0.11",
     "@types/node-telegram-bot-api": "^0.63.3",
     "@types/react": "^18",
     "@types/react-dom": "^18",
