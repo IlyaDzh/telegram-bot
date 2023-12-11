@@ -1,6 +1,7 @@
 import React, { FC, useCallback, useEffect } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { Box, Button, Heading } from '@chakra-ui/react';
+import NextLink from 'next/link';
 
 import { CreateDeckData } from '../types';
 import { DEFAULT_MAX_CARD_COUNTS } from '../lib/DeckCreatorUtils';
@@ -64,16 +65,24 @@ const DeckStep: FC<Props> = ({ onSuccess }) => {
 
     return (
         <FormProvider {...methods}>
-            <Heading as='h1'>Создать колоду</Heading>
+            <Heading as='h1' mb={8}>
+                Создать колоду
+            </Heading>
 
             <ColumnLayout as='form' onSubmit={methods.handleSubmit(onSubmit)}>
-                <Box mt={8}>
+                <Box>
                     <DeckTitleField />
                     <DeckCategoryField />
                     <DeckDifficultyField />
                     <DeckCardsCountField />
                 </Box>
-                <Button type='submit'>Далее</Button>
+
+                <Box display='grid' gap={2}>
+                    <Button type='submit'>Далее</Button>
+                    <NextLink href='/decks' passHref legacyBehavior>
+                        <Button as='a'>На страницу колод</Button>
+                    </NextLink>
+                </Box>
             </ColumnLayout>
         </FormProvider>
     );

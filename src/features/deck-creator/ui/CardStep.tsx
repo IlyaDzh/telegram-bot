@@ -89,7 +89,7 @@ const CardStep: FC<Props> = ({ cardIndex, onNextStep, onPrevStep, onSaveDeck, on
 
     return (
         <FormProvider {...methods}>
-            <Box display='flex' justifyContent='space-between' alignItems='center'>
+            <Box display='flex' justifyContent='space-between' alignItems='center' mb={8}>
                 <Heading as='h1' size='md'>
                     Карта {cardIndex}
                 </Heading>
@@ -101,7 +101,7 @@ const CardStep: FC<Props> = ({ cardIndex, onNextStep, onPrevStep, onSaveDeck, on
                 </Button>
             </Box>
             <ColumnLayout as='form' onSubmit={methods.handleSubmit(submit)}>
-                <Box mt={8}>
+                <Box>
                     <CardQuestionField />
                     <CardAnswerField />
                 </Box>
