@@ -21,7 +21,7 @@ const CreateDeck = async (req: NextApiRequest, res: NextApiResponse) => {
 
             const user = await prisma.user.findFirst({
                 where: {
-                    id: userId,
+                    userId: userId,
                 },
             });
 

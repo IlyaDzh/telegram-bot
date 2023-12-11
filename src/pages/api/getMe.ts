@@ -16,7 +16,7 @@ const GetMe = async (req: NextApiRequest, res: NextApiResponse) => {
 
             const user = await prisma.user.findFirst({
                 where: {
-                    id: JSON.parse(userParams).id.toString(),
+                    userId: JSON.parse(userParams).id.toString(),
                 },
             });
 

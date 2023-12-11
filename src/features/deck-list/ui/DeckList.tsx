@@ -18,8 +18,6 @@ export const DeckList = () => {
     const [searchValue, setSearchValue] = useState('');
 
     useEffect(() => {
-        setIsLoading(true);
-
         fetchDecks()
             .then(({ data }) => {
                 setDecks(data);

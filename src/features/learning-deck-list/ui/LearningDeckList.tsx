@@ -14,10 +14,13 @@ export const LearningDeckList = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        fetchLearningDecks().then(({ data }) => {
-            setDecks(data);
-            setIsLoading(false);
-        });
+        fetchLearningDecks()
+            .then(({ data }) => {
+                setDecks(data);
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
     }, []);
 
     return (

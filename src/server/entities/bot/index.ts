@@ -22,11 +22,11 @@ bot.on('message', async msg => {
 
     const user = await prisma.user.upsert({
         where: {
-            id: msg.from.id.toString(),
+            userId: msg.from.id.toString(),
         },
         update: {},
         create: {
-            id: msg.from.id.toString(),
+            userId: msg.from.id.toString(),
             chatId: msg.chat.id.toString(),
             username: msg.from.username || 'UNKNOWN',
             name: msg.from.first_name,
