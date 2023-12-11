@@ -6,9 +6,9 @@ import middleware from '@/server/shared/utils/_middleware';
 import { getParamsFromInitData } from '@/server/shared/utils/getParamsFromInitData';
 import { Role } from '@/types/user';
 
-const CreateDeck = async (req: NextApiRequest, res: NextApiResponse) => {
-    if (req.method == 'POST') {
-        const { title, category, difficulty, cards } = req.body;
+const DeleteDeck = async (req: NextApiRequest, res: NextApiResponse) => {
+    if (req.method == 'DELETE') {
+        const { deckId } = req.body;
 
         const userParams = getParamsFromInitData(req.cookies.initData || '', 'user');
 
@@ -29,23 +29,23 @@ const CreateDeck = async (req: NextApiRequest, res: NextApiResponse) => {
                 throw new Error('Пользователь не найден');
             }
 
-            if (user.role !== Role.admin) {
-                throw new Error('У вас нет прав на создание колоды');
-            }
-
-            await prisma.deck.create({
-                data: {
-                    title: title,
-                    category: category,
-                    difficulty: difficulty,
-                    authorId: userId,
-                    cards: {
-                        create: cards,
-                    },
+            const deletedDeck = await prisma.deck.findFirst({
+                where: {
+                    id: deckId,
                 },
             });
 
-            res.status(201).json({ status: true });
+            if (user.role !== Role.admin || deletedDeck?.authorId !== userId) {
+                throw new Error('У вас нет прав на удаление колоды');
+            }
+
+            await prisma.deck.delete({
+                where: {
+                    id: deckId,
+                },
+            });
+
+            res.status(200).json({ status: true });
         } catch (error) {
             res.status(400).json({ error: getErrorMessage(error) });
         }
@@ -54,4 +54,4 @@ const CreateDeck = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 };
 
-export default middleware(CreateDeck);
+export default middleware(DeleteDeck);

@@ -19,6 +19,7 @@ const GetDeckList = async (req: NextApiRequest, res: NextApiResponse) => {
             const decks = await prisma.deck.findMany({
                 include: {
                     cards: true,
+                    author: true,
                 },
             });
 
@@ -42,6 +43,7 @@ const GetDeckList = async (req: NextApiRequest, res: NextApiResponse) => {
                 title: deck.title,
                 category: deck.category,
                 difficulty: deck.difficulty,
+                authorId: deck.authorId,
                 questionsCount: deck.cards.length,
                 isNew: !learningDecksIds.includes(deck.id),
             }));
