@@ -4,10 +4,13 @@ import NextLink from 'next/link';
 
 import { ColumnLayout } from '@/shared/ui/layout';
 import { Alert } from '@/shared/ui/alert';
+import { Confetti } from '@/shared/ui/confetti';
 
 export const SuccessAlert = () => {
     return (
         <ColumnLayout>
+            <Confetti />
+
             <Alert
                 status='success'
                 title='Вы прошли все вопросы!'
