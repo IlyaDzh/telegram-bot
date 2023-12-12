@@ -1,25 +1,41 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Box, Button, Heading, Input, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, Heading, useDisclosure } from '@chakra-ui/react';
+import { FormProvider, useForm } from 'react-hook-form';
 import NextLink from 'next/link';
 
 import { Spinner } from '@/shared/ui/spinner';
 import { ColumnLayout } from '@/shared/ui/layout';
 import { useTelegram } from '@/hooks/useTelegram';
 import { Role } from '@/types/user';
+import { Difficulty } from '@/types/deck';
 import { fetchDecks } from '../api/fetchDecks';
 import { fetchDeleteDeck } from '../api/fetchDeleteDeck';
 import { Deck } from '../types';
 import { DeckCard } from './DeckCard';
 import { NotFoundAlert } from './NotFoundAlert';
 import { DeckDeleteModal } from './DeckDeleteModal';
+import {
+    DECK_FILTER_DIFFICULTY_FIELD_NAME,
+    DECK_FILTER_NEW_FIELD_NAME,
+    DECK_FILTER_SEARCH_FIELD_NAME,
+    DeckFilters,
+} from './DeckFilters';
 
 export const DeckList = () => {
     const { user } = useTelegram();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [decks, setDecks] = useState<Deck[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [searchValue, setSearchValue] = useState('');
     const [deletedDeckId, setDeletedDeckId] = useState<null | string>(null);
+
+    const methods = useForm({
+        mode: 'onBlur',
+        defaultValues: {
+            [DECK_FILTER_SEARCH_FIELD_NAME]: '',
+            [DECK_FILTER_DIFFICULTY_FIELD_NAME]: Difficulty.All,
+            [DECK_FILTER_NEW_FIELD_NAME]: false,
+        },
+    });
 
     useEffect(() => {
         fetchDecks()
@@ -46,16 +62,21 @@ export const DeckList = () => {
         });
     };
 
-    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchValue(event.target.value);
-    };
+    const [searchValue, difficultyValue, onlyNewValue] = methods.watch([
+        DECK_FILTER_SEARCH_FIELD_NAME,
+        DECK_FILTER_DIFFICULTY_FIELD_NAME,
+        DECK_FILTER_NEW_FIELD_NAME,
+    ]);
 
-    const filteredDecks = useMemo(
-        () => decks.filter(deck => deck.title.toLowerCase().includes(searchValue.toLowerCase())),
-        [decks, searchValue],
-    );
+    const displayedDecks = useMemo(() => {
+        return decks.filter(deck => {
+            const titleMatches = !searchValue || deck.title.toLowerCase().includes(searchValue.toLowerCase());
+            const difficultyMatches = difficultyValue === Difficulty.All || deck.difficulty === difficultyValue;
+            const isNewMatches = !onlyNewValue || deck.isNew === onlyNewValue;
 
-    const displayedDecks = searchValue ? filteredDecks : decks;
+            return titleMatches && difficultyMatches && isNewMatches;
+        });
+    }, [decks, searchValue, difficultyValue, onlyNewValue]);
 
     return (
         <ColumnLayout>
@@ -63,7 +84,9 @@ export const DeckList = () => {
                 <Box display='grid' gap={3} mb={8}>
                     <Heading as='h1'>Список колод</Heading>
 
-                    <Input onChange={handleSearchChange} value={searchValue} placeholder='Поиск' />
+                    <FormProvider {...methods}>
+                        <DeckFilters />
+                    </FormProvider>
                 </Box>
 
                 {isLoading && (
@@ -75,9 +98,9 @@ export const DeckList = () => {
                 {decks.length === 0 && !isLoading && <NotFoundAlert />}
 
                 {!isLoading && (
-                    <Box display='grid' gap={6} mb={5}>
+                    <Box display='grid' gap={6}>
                         {displayedDecks.map((deck, index) => {
-                            const canDelete = user?.role === Role.admin || deck.authorId === user?.userId;
+                            const canDelete = user?.role === Role.Admin || deck.authorId === user?.userId;
 
                             return (
                                 <DeckCard
@@ -92,7 +115,7 @@ export const DeckList = () => {
             </Box>
 
             <Box display='grid' gap={2}>
-                {user && user.role === Role.admin && (
+                {user && user.role === Role.Admin && (
                     <NextLink href='/' passHref legacyBehavior>
                         <Button as='a' width='100%'>
                             Создать колоду

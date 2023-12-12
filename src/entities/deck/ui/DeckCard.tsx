@@ -26,19 +26,10 @@ interface Props extends React.PropsWithChildren {
     onDelete?: () => void;
 }
 
-const DIFFICULTY = {
-    [Difficulty.ease]: {
-        text: 'Ease',
-        color: 'green',
-    },
-    [Difficulty.medium]: {
-        text: 'Medium',
-        color: 'yellow',
-    },
-    [Difficulty.hard]: {
-        text: 'Hard',
-        color: 'red',
-    },
+const DIFFICULTY_COLORS = {
+    [Difficulty.Ease]: 'green',
+    [Difficulty.Medium]: 'yellow',
+    [Difficulty.Hard]: 'red',
 };
 
 export const DeckCard: FC<Props> = ({
@@ -56,7 +47,9 @@ export const DeckCard: FC<Props> = ({
             <CardHeader>
                 <Box display='flex' justifyContent='space-between' alignItems='center' gap={4} mb={1}>
                     <Box display='flex' gap={1}>
-                        <Badge colorScheme={DIFFICULTY[difficulty].color}>{DIFFICULTY[difficulty].text}</Badge>
+                        <Badge colorScheme={DIFFICULTY_COLORS[difficulty as keyof typeof DIFFICULTY_COLORS]}>
+                            {difficulty}
+                        </Badge>
                         {isNew && <Badge colorScheme='green'>NEW</Badge>}
                     </Box>
 

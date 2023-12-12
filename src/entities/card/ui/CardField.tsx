@@ -32,7 +32,7 @@ export const CardField: React.FC<CardFieldProps> = ({ fieldName, fieldNameMode, 
 
     return (
         <Field errorId={errorId} position='relative'>
-            {fieldMode === 'code' ? (
+            {fieldMode === CardFieldMode.Code ? (
                 <Editor
                     placeholder={placeholder}
                     aria-label={`card-${fieldName}-field`}
@@ -52,7 +52,7 @@ export const CardField: React.FC<CardFieldProps> = ({ fieldName, fieldNameMode, 
             )}
 
             <Switch
-                isChecked={fieldMode === 'code'}
+                isChecked={fieldMode === CardFieldMode.Code}
                 onChange={handleSwitchMode}
                 size='md'
                 position='absolute'

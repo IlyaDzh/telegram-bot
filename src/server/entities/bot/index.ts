@@ -2,7 +2,6 @@ import TelegramBot from 'node-telegram-bot-api';
 import cron from 'node-cron';
 
 import prisma from '@/server/entities/prisma';
-import { Role } from '@/types/user';
 import { generateNotificationMessage, getStartKeyboards } from '@/server/shared/utils/botUtils';
 
 const token = process.env.BOT_TOKEN as string;
@@ -30,7 +29,6 @@ bot.on('message', async msg => {
             chatId: msg.chat.id.toString(),
             username: msg.from.username || 'UNKNOWN',
             name: msg.from.first_name,
-            role: Role.user,
         },
     });
 

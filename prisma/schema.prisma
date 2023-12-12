@@ -17,7 +17,7 @@ model User {
   chatId        String
   name          String
   username      String         @unique
-  role          Int            @default(2)
+  role          Role           @default(User)
   learningDecks LearningDeck[]
   Deck          Deck[]
 }
@@ -25,9 +25,9 @@ model User {
 model Card {
   id                           String         @id @default(auto()) @map("_id") @db.ObjectId
   question                     String
-  questionMode                 String         @default("text")
+  questionMode                 Mode           @default(Text)
   answer                       String
-  answerMode                   String         @default("text")
+  answerMode                   Mode           @default(Code)
   deck                         Deck           @relation(fields: [deckId], references: [id], onDelete: Cascade)
   deckId                       String         @db.ObjectId
   learningDecksKnownCardsIDs   String[]       @db.ObjectId
@@ -40,7 +40,7 @@ model Deck {
   id            String         @id @default(auto()) @map("_id") @db.ObjectId
   title         String
   category      String
-  difficulty    Int
+  difficulty    Difficulty
   author        User           @relation(fields: [authorId], references: [userId])
   authorId      String
   cards         Card[]
@@ -59,4 +59,20 @@ model LearningDeck {
   unknownCards    Card[]   @relation("UnknownCards", fields: [unknownCardsIDs], references: [id])
 
   @@unique([deckId, userId])
+}
+
+enum Role {
+  Admin
+  User
+}
+
+enum Difficulty {
+  Ease
+  Medium
+  Hard
+}
+
+enum Mode {
+  Text
+  Code
 }

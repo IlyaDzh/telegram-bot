@@ -24,6 +24,8 @@ export class DeckCreatorUtils {
         const cards = await db.cards.toArray();
         const deck = await db.deck.toCollection().first();
 
+        if (!deck || !cards) return;
+
         await fetchCreateDeck(DeckCreatorUtils.formatCreatePayload(deck, cards));
     };
 
@@ -32,12 +34,12 @@ export class DeckCreatorUtils {
         db.cards.clear();
     };
 
-    private static formatCreatePayload = (deck?: CreateDeckData, cards?: CreateCardData[]) => {
+    private static formatCreatePayload = (deck: CreateDeckData, cards: CreateCardData[]) => {
         return {
-            title: deck?.title || '',
-            category: deck?.category || '',
-            difficulty: Number(deck?.difficulty) || 0,
-            cards: (cards || []).map(card => ({
+            title: deck.title || '',
+            category: deck.category || '',
+            difficulty: deck.difficulty,
+            cards: cards.map(card => ({
                 question: card.question,
                 questionMode: card.questionMode,
                 answer: card.answer,

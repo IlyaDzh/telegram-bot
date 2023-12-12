@@ -10,6 +10,19 @@ export const theme = extendTheme({
         },
     },
     components: {
+        Modal: {
+            variants: {
+                initial: {
+                    dialog: {
+                        bg: 'var(--tg-theme-bg-color)',
+                        color: 'var(--tg-theme-text-color)',
+                    },
+                },
+            },
+            defaultProps: {
+                variant: 'initial',
+            },
+        },
         NumberInput: {
             variants: {
                 outline: {

@@ -1,4 +1,4 @@
-import { Role } from '@/types/user';
+import { Role } from '@prisma/client';
 
 const URL = process.env.NEXT_PUBLIC_BASE_URL as string;
 
@@ -22,7 +22,7 @@ export const getStartKeyboards = (role: Role) => {
         [{ text: 'Изучаемые колоды', web_app: { url: `${URL}/learning-decks` } }],
     ];
 
-    if (role === Role.admin) {
+    if (role === Role.Admin) {
         keyboards.unshift([{ text: 'Создать колоду', web_app: { url: `${URL}/` } }]);
     }
 

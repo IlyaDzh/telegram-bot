@@ -1,6 +1,6 @@
 export enum CardFieldMode {
-    Text = 'text',
-    Code = 'code',
+    Text = 'Text',
+    Code = 'Code',
 }
 
 export interface Card {

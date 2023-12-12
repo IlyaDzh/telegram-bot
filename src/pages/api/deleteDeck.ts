@@ -35,7 +35,7 @@ const DeleteDeck = async (req: NextApiRequest, res: NextApiResponse) => {
                 },
             });
 
-            if (user.role !== Role.admin || deletedDeck?.authorId !== userId) {
+            if (user.role !== Role.Admin || deletedDeck?.authorId !== userId) {
                 throw new Error('У вас нет прав на удаление колоды');
             }
 

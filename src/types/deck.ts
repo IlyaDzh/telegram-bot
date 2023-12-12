@@ -6,7 +6,8 @@ export interface Deck {
 }
 
 export enum Difficulty {
-    ease = 0,
-    medium = 1,
-    hard = 2,
+    All = 'All',
+    Ease = 'Ease',
+    Medium = 'Medium',
+    Hard = 'Hard',
 }

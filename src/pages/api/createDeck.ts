@@ -29,7 +29,7 @@ const CreateDeck = async (req: NextApiRequest, res: NextApiResponse) => {
                 throw new Error('Пользователь не найден');
             }
 
-            if (user.role !== Role.admin) {
+            if (user.role !== Role.Admin) {
                 throw new Error('У вас нет прав на создание колоды');
             }
 

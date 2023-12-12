@@ -22,9 +22,9 @@ export const DeckDifficultyField = () => {
                     required: true,
                 })}
             >
-                <option value={Difficulty.ease}>Легкий</option>
-                <option value={Difficulty.medium}>Средний</option>
-                <option value={Difficulty.hard}>Сложный</option>
+                <option value={Difficulty.Ease}>Легкий</option>
+                <option value={Difficulty.Medium}>Средний</option>
+                <option value={Difficulty.Hard}>Сложный</option>
             </Select>
         </Field>
     );
