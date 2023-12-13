@@ -29,8 +29,8 @@ const schema = yup
     .object({
         [CARD_QUESTION_FIELD_NAME]: yup.string().required(),
         [CARD_ANSWER_FIELD_NAME]: yup.string().required(),
-        [CARD_QUESTION_FIELD_MODE]: yup.string().required(),
-        [CARD_ANSWER_FIELD_MODE]: yup.string().required(),
+        [CARD_QUESTION_FIELD_MODE]: yup.mixed<CardFieldMode>().oneOf(Object.values(CardFieldMode)).required(),
+        [CARD_ANSWER_FIELD_MODE]: yup.mixed<CardFieldMode>().oneOf(Object.values(CardFieldMode)).required(),
     })
     .required();
 

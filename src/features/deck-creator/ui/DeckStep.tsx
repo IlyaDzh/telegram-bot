@@ -28,7 +28,7 @@ const DeckStep: FC<Props> = ({ onSuccess }) => {
         mode: 'onBlur',
         defaultValues: {
             cardsCount: DEFAULT_MAX_CARD_COUNTS,
-            difficulty: Difficulty.ease,
+            difficulty: Difficulty.Ease,
         },
     });
 
